@@ -25,8 +25,8 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
-    public ResponseEntity<List<ScheduleDto>> getRegularSchedules() {
-        return ResponseEntity.ok(scheduleService.getRegularSchedules());
+    public ResponseEntity<List<ScheduleDto>> getPublicSchedules() {
+        return ResponseEntity.ok(scheduleService.getPublicSchedules());
     }
 
     // Admin endpoints

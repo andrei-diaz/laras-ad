@@ -1,13 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import {
     MapPin,
     Instagram,
     Facebook,
     Star,
 } from 'lucide-react';
+import { scheduleService, Schedule } from '../../services/scheduleService';
+
+// Helper to format time from "HH:mm" to "H:mm AM/PM"
+const formatTime = (time?: string): string => {
+    if (!time) return '';
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const hour12 = hours % 12 || 12;
+    return `${hour12}:${minutes.toString().padStart(2, '0')} ${period}`;
+};
 
 const HomePage: React.FC = () => {
+    // Fetch schedules from API
+    const { data: schedules = [] } = useQuery({
+        queryKey: ['schedules', 'public'],
+        queryFn: scheduleService.getPublicSchedule,
+    });
+
+    // Format schedules for display
+    const formatScheduleDisplay = (schedule: Schedule): string => {
+        if (schedule.isClosed) return 'Cerrado';
+        return `${formatTime(schedule.openTime)} - ${formatTime(schedule.closeTime)}`;
+    };
+
     return (
         <div className="font-sans antialiased text-stone-800">
             {/* ===== HERO SECTION ===== */}
@@ -113,13 +136,20 @@ const HomePage: React.FC = () => {
                     <div className="space-y-6 text-stone-300">
                         <div>
                             <h3 className="text-white font-bold mb-1 block">Dirección</h3>
-                            <p>Calle Principal #123</p>
-                            <p>Colonia Centro, Ciudad</p>
+                            <p>Simón Bolívar y Cabrera</p>
+                            <p>67510 Montemorelos, N.L.</p>
                         </div>
                         <div>
                             <h3 className="text-white font-bold mb-1 block">Horario</h3>
-                            <p>Lunes - Domingo</p>
-                            <p>9:00 AM - 11:00 PM</p>
+                            {schedules.length > 0 ? (
+                                schedules.map((schedule) => (
+                                    <p key={schedule.id}>
+                                        {schedule.displayDays}: {formatScheduleDisplay(schedule)}
+                                    </p>
+                                ))
+                            ) : (
+                                <p>Cargando horarios...</p>
+                            )}
                         </div>
                         <div>
                             <h3 className="text-white font-bold mb-1 block">Contacto</h3>
@@ -130,13 +160,14 @@ const HomePage: React.FC = () => {
                 </div>
                 <div className="col-span-1 lg:col-span-2 relative order-1 lg:order-2 bg-stone-200">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14318.663558667634!2d-100.9942766!3d26.2072124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDEyJzI2LjAiTiAxMDDCsDU5JzM5LjQiVw!5e0!3m2!1sen!2smx!4v1635780000000!5m2!1sen!2smx"
+                        src="https://maps.google.com/maps?q=Sim%C3%B3n+Bol%C3%ADvar+y+Cabrera,+67510+Montemorelos,+N.L.,+Mexico&t=&z=17&ie=UTF8&iwloc=&output=embed"
                         width="100%"
                         height="100%"
                         style={{ border: 0 }}
                         allowFullScreen={true}
                         loading="lazy"
-                        title="Ubicación LARAS"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Ubicación LARAS - Montemorelos"
                         className="filter grayscale hover:grayscale-0 transition-all duration-700"
                     ></iframe>
                 </div>
@@ -171,7 +202,7 @@ const HomePage: React.FC = () => {
                             <ul className="space-y-2 text-stone-600 text-sm">
                                 <li className="flex items-center gap-2">
                                     <MapPin className="w-4 h-4 text-amber-600" />
-                                    <span>Calle Principal #123, Centro</span>
+                                    <span>Simón Bolívar y Cabrera, Montemorelos</span>
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <span className="text-amber-600">📞</span>
@@ -188,8 +219,11 @@ const HomePage: React.FC = () => {
                         <div>
                             <h4 className="font-bold text-stone-800 mb-4 uppercase tracking-wider text-sm">Horarios</h4>
                             <ul className="space-y-1 text-stone-600 text-sm mb-6">
-                                <li>Lunes - Viernes: 9:00 AM - 11:00 PM</li>
-                                <li>Sábado - Domingo: 10:00 AM - 12:00 AM</li>
+                                {schedules.map((schedule) => (
+                                    <li key={schedule.id}>
+                                        {schedule.displayDays}: {formatScheduleDisplay(schedule)}
+                                    </li>
+                                ))}
                             </ul>
                             <h4 className="font-bold text-stone-800 mb-3 uppercase tracking-wider text-sm">Síguenos</h4>
                             <div className="flex gap-3">

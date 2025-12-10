@@ -6,26 +6,35 @@ export type DayOfWeek = 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDA
 export interface Schedule {
     id: number;
     scheduleType: ScheduleType;
-    dayOfWeek?: DayOfWeek;
-    specialDate?: string;
+    daysOfWeek?: DayOfWeek[];
+    startDate?: string;
+    endDate?: string;
     openTime?: string;
     closeTime?: string;
     isClosed: boolean;
     description?: string;
     priority: number;
+    displayOrder: number;
+    expiresAt?: string;
     createdAt: string;
     updatedAt: string;
+    // Display helpers from backend
+    displayDays?: string;
+    displayDateRange?: string;
 }
 
 export interface ScheduleInput {
     scheduleType: ScheduleType;
-    dayOfWeek?: DayOfWeek;
-    specialDate?: string;
+    daysOfWeek?: DayOfWeek[];
+    startDate?: string;
+    endDate?: string;
     openTime?: string;
     closeTime?: string;
     isClosed?: boolean;
     description?: string;
     priority?: number;
+    displayOrder?: number;
+    expiresAt?: string;
 }
 
 export interface RestaurantStatus {

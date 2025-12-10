@@ -14,16 +14,20 @@ const PublicPromotionsPage = React.lazy(() => import('./pages/public/PromotionsP
 const LoginPage = React.lazy(() => import('./pages/admin/LoginPage'));
 const DashboardPage = React.lazy(() => import('./pages/admin/DashboardPage'));
 const MenuManagementPage = React.lazy(() => import('./pages/admin/MenuManagementPage'));
+const MenuTemplatePage = React.lazy(() => import('./pages/admin/MenuTemplatePage'));
 const AdminPromotionsPage = React.lazy(() => import('./pages/admin/PromotionsPage'));
 const SchedulePage = React.lazy(() => import('./pages/admin/SchedulePage'));
 const SettingsPage = React.lazy(() => import('./pages/admin/SettingsPage'));
 const ReviewsPage = React.lazy(() => import('./pages/admin/ReviewsPage'));
 const MessagesPage = React.lazy(() => import('./pages/admin/MessagesPage'));
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: isDev ? 0 : 5 * 60 * 1000, // 0 in dev, 5 min in prod
+      refetchInterval: isDev ? 3000 : false, // Auto-refresh every 3s in dev
       retry: 1,
     },
   },
@@ -55,6 +59,7 @@ function App() {
                 <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="/admin/dashboard" element={<DashboardPage />} />
                 <Route path="/admin/menu" element={<MenuManagementPage />} />
+                <Route path="/admin/menu-template" element={<MenuTemplatePage />} />
                 <Route path="/admin/promotions" element={<AdminPromotionsPage />} />
                 <Route path="/admin/schedule" element={<SchedulePage />} />
                 <Route path="/admin/settings" element={<SettingsPage />} />

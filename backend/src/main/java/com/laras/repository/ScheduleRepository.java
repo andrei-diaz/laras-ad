@@ -6,28 +6,37 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
-    List<Schedule> findByScheduleTypeOrderByDayOfWeekAsc(Schedule.ScheduleType scheduleType);
+    // Get all regular schedules
+    List<Schedule> findByScheduleTypeOrderByDaysOfWeekAsc(Schedule.ScheduleType scheduleType);
 
-    Optional<Schedule> findByScheduleTypeAndDayOfWeek(Schedule.ScheduleType scheduleType, DayOfWeek dayOfWeek);
+    // Get all special schedules ordered by start date
+    List<Schedule> findByScheduleTypeOrderByStartDateDesc(Schedule.ScheduleType scheduleType);
 
-    Optional<Schedule> findByScheduleTypeAndSpecialDate(Schedule.ScheduleType scheduleType, LocalDate specialDate);
+    // Get active overrides (not expired)
+    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'OVERRIDE' " +
+           "AND (s.expiresAt IS NULL OR s.expiresAt >= :today) " +
+           "ORDER BY s.priority DESC")
+    List<Schedule> findActiveOverrides(@Param("today") LocalDate today);
 
-    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'OVERRIDE' ORDER BY s.priority DESC")
-    List<Schedule> findActiveOverrides();
+    // Find special schedules that apply to a specific date (single date or date range)
+    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'SPECIAL' " +
+           "AND s.startDate <= :date " +
+           "AND (s.endDate IS NULL AND s.startDate = :date OR s.endDate >= :date) " +
+           "ORDER BY s.priority DESC")
+    List<Schedule> findSpecialSchedulesForDate(@Param("date") LocalDate date);
 
-    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'SPECIAL' AND s.specialDate = :date")
-    Optional<Schedule> findSpecialScheduleForDate(@Param("date") LocalDate date);
+    // Find regular schedules that contain a specific day
+    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'REGULAR' " +
+           "AND s.daysOfWeek LIKE %:day%")
+    List<Schedule> findRegularSchedulesContainingDay(@Param("day") String day);
 
-    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'REGULAR' AND s.dayOfWeek = :day")
-    Optional<Schedule> findRegularScheduleForDay(@Param("day") DayOfWeek day);
-
-    List<Schedule> findByScheduleTypeOrderBySpecialDateDesc(Schedule.ScheduleType scheduleType);
+    // Get all regular schedules ordered by displayOrder for public view
+    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'REGULAR' ORDER BY s.displayOrder ASC")
+    List<Schedule> findRegularSchedulesOrderedByDisplay();
 }
