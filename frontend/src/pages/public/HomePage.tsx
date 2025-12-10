@@ -2,364 +2,212 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     MapPin,
-    Phone,
-    Clock,
     Instagram,
     Facebook,
-    ChevronRight,
     Star,
-    Utensils,
-    Calendar
 } from 'lucide-react';
 
 const HomePage: React.FC = () => {
     return (
-        <div className="min-h-screen bg-background">
-            {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-b border-border">
-                <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                    <Link to="/" className="text-2xl font-bold text-primary">
-                        LARAS
-                    </Link>
-                    <div className="hidden md:flex items-center gap-8">
-                        <a href="#inicio" className="text-foreground/80 hover:text-primary transition-colors">Inicio</a>
-                        <a href="#menu" className="text-foreground/80 hover:text-primary transition-colors">Menú</a>
-                        <a href="#promociones" className="text-foreground/80 hover:text-primary transition-colors">Promociones</a>
-                        <a href="#nosotros" className="text-foreground/80 hover:text-primary transition-colors">Nosotros</a>
-                        <a href="#contacto" className="text-foreground/80 hover:text-primary transition-colors">Contacto</a>
-                    </div>
-                    <div className="flex items-center gap-4">
-                        <div className="hidden sm:flex items-center gap-2 text-sm">
-                            <Clock className="h-4 w-4 text-green-500" />
-                            <span className="text-green-500 font-medium">Abierto</span>
-                        </div>
-                        <a href="tel:+521234567890" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                            Ordenar
-                        </a>
-                    </div>
-                </div>
-            </nav>
+        <div className="font-sans antialiased text-stone-800">
+            {/* ===== HERO SECTION ===== */}
+            <section className="min-h-screen bg-white">
+                <div className="grid lg:grid-cols-2 min-h-screen">
+                    {/* Left Content */}
+                    <div className="flex flex-col justify-center p-8 lg:p-20 relative order-2 lg:order-1">
+                        {/* Header in Hero */}
+                        <header className="absolute top-0 left-0 w-full p-6 lg:p-10 flex items-center justify-between z-10">
+                            <Link to="/" className="flex items-center">
+                                <img src="/images/logo-black.png" alt="LARAS" className="h-[120px] w-[120px] object-contain" />
+                            </Link>
+                            <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-stone-600">
+                                <Link to="/" className="text-stone-900 border-b-2 border-amber-500">Inicio</Link>
+                                <Link to="/menu" className="hover:text-amber-500 transition-colors">Menú</Link>
+                                <Link to="/nosotros" className="hover:text-amber-500 transition-colors">Nosotros</Link>
+                                <Link to="/contacto" className="hover:text-amber-500 transition-colors">Contacto</Link>
+                            </nav>
+                        </header>
 
-            {/* Hero Section */}
-            <section id="inicio" className="relative min-h-screen flex items-center justify-center pt-16">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-background" />
-                <div
-                    className="absolute inset-0 opacity-20"
-                    style={{
-                        backgroundImage: 'url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920")',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center'
-                    }}
-                />
-                <div className="relative container mx-auto px-4 text-center">
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6">
-                        Bienvenidos a <span className="text-primary">LARAS</span>
-                    </h1>
-                    <p className="text-xl md:text-2xl text-foreground/70 mb-8 max-w-2xl mx-auto">
-                        Donde cada platillo cuenta una historia. Disfruta de la mejor comida casual en un ambiente único.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="#menu" className="bg-primary text-primary-foreground px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary/90 transition-colors">
-                            Ver Menú
-                        </a>
-                        <a href="#contacto" className="border-2 border-primary text-primary px-8 py-4 rounded-lg text-lg font-semibold hover:bg-primary hover:text-primary-foreground transition-colors">
-                            Contáctanos
-                        </a>
-                    </div>
-                </div>
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-                    <ChevronRight className="h-8 w-8 rotate-90 text-primary" />
-                </div>
-            </section>
-
-            {/* Status Banner */}
-            <section className="bg-primary text-primary-foreground py-4">
-                <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-6 md:gap-12 text-center">
-                    <div className="flex items-center gap-2">
-                        <Clock className="h-5 w-5" />
-                        <span>Lun - Sáb: 9:00 AM - 9:00 PM</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <MapPin className="h-5 w-5" />
-                        <span>Calle Principal #123, Ciudad</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Phone className="h-5 w-5" />
-                        <span>+52 (123) 456-7890</span>
-                    </div>
-                </div>
-            </section>
-
-            {/* Featured Dishes / Menu Preview */}
-            <section id="menu" className="py-20 bg-muted/30">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold mb-4">Nuestro Menú</h2>
-                        <p className="text-foreground/70 max-w-xl mx-auto">
-                            Descubre nuestros platillos favoritos, preparados con ingredientes frescos y mucho amor.
-                        </p>
-                    </div>
-
-                    {/* Category Tabs */}
-                    <div className="flex justify-center gap-4 mb-8 flex-wrap">
-                        {['Todos', 'Entradas', 'Platos Fuertes', 'Postres', 'Bebidas'].map((cat) => (
-                            <button
-                                key={cat}
-                                className="px-6 py-2 rounded-full border border-border hover:border-primary hover:text-primary transition-colors"
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Dishes Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[1, 2, 3, 4, 5, 6].map((i) => (
-                            <div key={i} className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group">
-                                <div className="h-48 bg-muted relative overflow-hidden">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                                    <Utensils className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-12 w-12 text-muted-foreground" />
-                                </div>
-                                <div className="p-5">
-                                    <h3 className="text-xl font-semibold mb-2">Platillo Especial {i}</h3>
-                                    <p className="text-foreground/60 text-sm mb-3">Deliciosa descripción del platillo con ingredientes frescos.</p>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xl font-bold text-primary">$99.00</span>
-                                        <button className="bg-primary/10 text-primary px-4 py-2 rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors">
-                                            Ordenar
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className="text-center mt-12">
-                        <Link to="/menu" className="inline-flex items-center gap-2 text-primary font-semibold hover:underline">
-                            Ver menú completo <ChevronRight className="h-4 w-4" />
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Promotions */}
-            <section id="promociones" className="py-20">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold mb-4">Promociones</h2>
-                        <p className="text-foreground/70 max-w-xl mx-auto">
-                            No te pierdas nuestras ofertas especiales y descuentos exclusivos.
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[1, 2, 3].map((i) => (
-                            <div key={i} className="relative bg-gradient-to-br from-primary to-orange-600 rounded-2xl p-6 text-primary-foreground overflow-hidden">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                                <Calendar className="h-10 w-10 mb-4" />
-                                <h3 className="text-2xl font-bold mb-2">Promoción Especial {i}</h3>
-                                <p className="text-primary-foreground/80 mb-4">
-                                    Descripción de la promoción con todos los detalles importantes.
-                                </p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm bg-white/20 px-3 py-1 rounded-full">Válido hasta 31/12</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* About Us */}
-            <section id="nosotros" className="py-20 bg-muted/30">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <h2 className="text-4xl font-bold mb-6">Sobre Nosotros</h2>
-                            <p className="text-foreground/70 text-lg mb-6">
-                                En LARAS, nos dedicamos a ofrecer una experiencia gastronómica única.
-                                Desde nuestros inicios, hemos mantenido el compromiso de servir platillos
-                                de calidad en un ambiente acogedor y familiar.
+                        <div className="max-w-lg mx-auto lg:mx-0 mt-28 lg:mt-28">
+                            <span className="inline-block text-amber-500 font-bold tracking-widest text-[11px] uppercase mb-2">Comida Casual Mexicana</span>
+                            <h1 className="text-3xl lg:text-5xl font-black text-stone-900 leading-[0.9] mb-5 tracking-tight">
+                                Sabor que<br />
+                                se siente en<br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600">cada bocado.</span>
+                            </h1>
+                            <p className="text-sm text-stone-500 mb-6 leading-relaxed max-w-sm">
+                                Tacos, hamburguesas y especialidades preparadas con ingredientes frescos y el toque casero que nos distingue desde 2014.
                             </p>
-                            <p className="text-foreground/70 text-lg mb-8">
-                                Cada ingrediente es seleccionado cuidadosamente para garantizar
-                                el mejor sabor en cada bocado. Te invitamos a ser parte de nuestra historia.
-                            </p>
-                            <div className="flex gap-4">
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-primary">10+</div>
-                                    <div className="text-sm text-foreground/60">Años de experiencia</div>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-primary">50+</div>
-                                    <div className="text-sm text-foreground/60">Platillos únicos</div>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-3xl font-bold text-primary">1000+</div>
-                                    <div className="text-sm text-foreground/60">Clientes felices</div>
-                                </div>
+                            <div className="flex flex-wrap gap-3">
+                                <Link to="/menu" className="px-6 py-3 bg-stone-900 text-white rounded-full font-bold text-xs tracking-wide hover:bg-amber-500 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-stone-900/20">
+                                    VER MENÚ
+                                </Link>
+                                <Link to="/contacto" className="px-6 py-3 bg-white border-2 border-stone-200 text-stone-900 rounded-full font-bold text-xs tracking-wide hover:border-stone-900 hover:bg-stone-50 transition-all">
+                                    ORDENAR AHORA
+                                </Link>
                             </div>
-                        </div>
-                        <div className="relative">
-                            <div className="bg-primary/20 rounded-2xl h-80 flex items-center justify-center">
-                                <span className="text-6xl">🍽️</span>
-                            </div>
-                            <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-lg">
-                                <div className="flex items-center gap-2">
-                                    <Star className="h-5 w-5 fill-current" />
-                                    <span className="text-2xl font-bold">4.9</span>
-                                </div>
-                                <div className="text-sm">+500 reseñas</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            {/* Testimonials */}
-            <section className="py-20">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-bold mb-4">Lo Que Dicen Nuestros Clientes</h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            { name: 'María García', text: 'La mejor comida de la ciudad. El ambiente es increíble y el servicio es excelente.' },
-                            { name: 'Juan López', text: 'Siempre vuelvo por sus platillos especiales. ¡Los recomiendo totalmente!' },
-                            { name: 'Ana Martínez', text: 'Un lugar perfecto para disfrutar en familia. Los precios son muy accesibles.' },
-                        ].map((review, i) => (
-                            <div key={i} className="bg-card p-6 rounded-xl border border-border">
-                                <div className="flex gap-1 mb-4">
-                                    {[...Array(5)].map((_, j) => (
-                                        <Star key={j} className="h-5 w-5 text-yellow-500 fill-current" />
+                            <div className="mt-12 flex items-center gap-6">
+                                <div className="flex -space-x-3">
+                                    {[1, 2, 3, 4].map((i) => (
+                                        <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-stone-200 overflow-hidden">
+                                        </div>
                                     ))}
+                                    <div className="w-8 h-8 rounded-full border-2 border-white bg-stone-900 text-white flex items-center justify-center text-[10px] font-bold">+1k</div>
                                 </div>
-                                <p className="text-foreground/70 mb-4 italic">"{review.text}"</p>
-                                <div className="font-semibold">{review.name}</div>
+                                <div>
+                                    <div className="flex gap-0.5 text-amber-500 mb-0.5">
+                                        {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-3 h-3 fill-current" />)}
+                                    </div>
+                                    <p className="text-[10px] font-bold text-stone-900">Clientes felices</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Image */}
+                    <div className="relative h-[50vh] lg:h-screen w-full order-1 lg:order-2 bg-stone-900 flex items-center justify-center overflow-hidden">
+                        <img
+                            src="/images/food/hero.png"
+                            alt="Hero Food"
+                            className="w-full h-full object-contain"
+                        />
+                    </div>
+                </div>
+            </section>
+
+            {/* ===== TESTIMONIALS (Marquee) ===== */}
+            <section className="py-24 bg-amber-50 overflow-hidden">
+                <div className="container mx-auto px-5 mb-16 text-center">
+                    <h2 className="text-3xl font-black text-stone-900 mb-4">Lo que dicen de nosotros</h2>
+                </div>
+
+                <div className="relative w-full">
+                    <div className="flex animate-scroll hover:[animation-play-state:paused] whitespace-nowrap gap-8 w-max pl-8">
+                        {[...Array(6)].map((_, i) => (
+                            <div key={i} className="w-[350px] lg:w-[450px] bg-white p-8 rounded-none border-l-4 border-amber-500 shadow-sm flex-shrink-0 whitespace-normal">
+                                <div className="flex gap-1 text-amber-500 mb-4">
+                                    {[...Array(5)].map((_, j) => <Star key={j} className="h-4 w-4 fill-current" />)}
+                                </div>
+                                <p className="text-lg font-medium text-stone-800 mb-4 text-pretty leading-relaxed">
+                                    "{i % 2 === 0 ? "¡Increíble sabor! Las hamburguesas son enormes y la carne tiene un sazón único. Definitivamente volveré." : "El mejor lugar para cenar con amigos. El servicio es rápido y la comida siempre está caliente y deliciosa."}"
+                                </p>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 bg-stone-200 rounded-full overflow-hidden"></div>
+                                    <div>
+                                        <div className="font-bold text-stone-900 text-sm">Cliente Feliz {i + 1}</div>
+                                        <div className="text-stone-400 text-xs">Hace 2 días</div>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Contact / Location */}
-            <section id="contacto" className="py-20 bg-muted/30">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* ===== MAP & INFO SECTION ===== */}
+            <section className="h-[500px] w-full relative grid lg:grid-cols-3">
+                <div className="bg-stone-900 text-white p-12 flex flex-col justify-center order-2 lg:order-1 col-span-1">
+                    <MapPin className="h-10 w-10 text-amber-500 mb-6" />
+                    <h2 className="text-3xl font-black mb-6">Visítanos</h2>
+                    <div className="space-y-6 text-stone-300">
                         <div>
-                            <h2 className="text-4xl font-bold mb-6">Contáctanos</h2>
-                            <p className="text-foreground/70 mb-8">
-                                ¿Tienes alguna pregunta o comentario? Nos encantaría escucharte.
-                            </p>
-                            <form className="space-y-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <input
-                                        type="text"
-                                        placeholder="Nombre"
-                                        className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                                    />
-                                    <input
-                                        type="email"
-                                        placeholder="Email"
-                                        className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                                    />
-                                </div>
-                                <input
-                                    type="tel"
-                                    placeholder="Teléfono (opcional)"
-                                    className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                                />
-                                <textarea
-                                    placeholder="Tu mensaje..."
-                                    rows={4}
-                                    className="w-full px-4 py-3 rounded-lg border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                                />
-                                <button
-                                    type="submit"
-                                    className="w-full bg-primary text-primary-foreground py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
-                                >
-                                    Enviar Mensaje
-                                </button>
-                            </form>
+                            <h3 className="text-white font-bold mb-1 block">Dirección</h3>
+                            <p>Calle Principal #123</p>
+                            <p>Colonia Centro, Ciudad</p>
                         </div>
                         <div>
-                            <div className="bg-card rounded-xl p-6 border border-border h-full">
-                                <h3 className="text-xl font-semibold mb-6">Encuéntranos</h3>
-                                <div className="space-y-4 mb-6">
-                                    <div className="flex items-start gap-3">
-                                        <MapPin className="h-5 w-5 text-primary mt-1" />
-                                        <div>
-                                            <div className="font-medium">Dirección</div>
-                                            <div className="text-foreground/60">Calle Principal #123, Colonia Centro, Ciudad, CP 12345</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3">
-                                        <Phone className="h-5 w-5 text-primary mt-1" />
-                                        <div>
-                                            <div className="font-medium">Teléfono</div>
-                                            <div className="text-foreground/60">+52 (123) 456-7890</div>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-3">
-                                        <Clock className="h-5 w-5 text-primary mt-1" />
-                                        <div>
-                                            <div className="font-medium">Horario</div>
-                                            <div className="text-foreground/60">Lun - Sáb: 9:00 AM - 9:00 PM</div>
-                                            <div className="text-foreground/60">Dom: 10:00 AM - 6:00 PM</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* Map placeholder */}
-                                <div className="bg-muted rounded-lg h-48 flex items-center justify-center">
-                                    <MapPin className="h-12 w-12 text-muted-foreground" />
-                                </div>
-                            </div>
+                            <h3 className="text-white font-bold mb-1 block">Horario</h3>
+                            <p>Lunes - Domingo</p>
+                            <p>9:00 AM - 11:00 PM</p>
+                        </div>
+                        <div>
+                            <h3 className="text-white font-bold mb-1 block">Contacto</h3>
+                            <p>+52 (123) 456-7890</p>
+                            <p>hola@laras.mx</p>
                         </div>
                     </div>
                 </div>
+                <div className="col-span-1 lg:col-span-2 relative order-1 lg:order-2 bg-stone-200">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14318.663558667634!2d-100.9942766!3d26.2072124!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDEyJzI2LjAiTiAxMDDCsDU5JzM5LjQiVw!5e0!3m2!1sen!2smx!4v1635780000000!5m2!1sen!2smx"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0 }}
+                        allowFullScreen={true}
+                        loading="lazy"
+                        title="Ubicación LARAS"
+                        className="filter grayscale hover:grayscale-0 transition-all duration-700"
+                    ></iframe>
+                </div>
             </section>
 
-            {/* Footer */}
-            <footer className="bg-foreground text-background py-12">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                        <div>
-                            <div className="text-2xl font-bold text-primary mb-4">LARAS</div>
-                            <p className="text-background/60">
-                                Tu lugar favorito para disfrutar de la mejor comida casual.
+            {/* ===== FOOTER ===== */}
+            <footer className="bg-amber-50 text-stone-800 pt-36 pb-12">
+                <div className="container mx-auto px-5">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                        {/* Logo & Description */}
+                        <div className="md:col-span-1">
+                            <img src="/images/logo-black.png" alt="LARAS" className="h-16 w-16 object-contain mb-4" />
+                            <p className="text-stone-600 text-sm leading-relaxed">
+                                Comida casual mexicana preparada con ingredientes frescos y el toque casero que nos distingue desde 2014.
                             </p>
                         </div>
+
+                        {/* Quick Links */}
                         <div>
-                            <h4 className="font-semibold mb-4">Enlaces</h4>
-                            <div className="space-y-2 text-background/60">
-                                <a href="#inicio" className="block hover:text-primary">Inicio</a>
-                                <a href="#menu" className="block hover:text-primary">Menú</a>
-                                <a href="#promociones" className="block hover:text-primary">Promociones</a>
-                                <a href="#nosotros" className="block hover:text-primary">Nosotros</a>
-                            </div>
+                            <h4 className="font-bold text-stone-800 mb-4 uppercase tracking-wider text-sm">Navegación</h4>
+                            <ul className="space-y-2">
+                                <li><Link to="/" className="text-stone-600 hover:text-amber-600 transition-colors text-sm">Inicio</Link></li>
+                                <li><Link to="/menu" className="text-stone-600 hover:text-amber-600 transition-colors text-sm">Menú</Link></li>
+                                <li><Link to="/nosotros" className="text-stone-600 hover:text-amber-600 transition-colors text-sm">Nosotros</Link></li>
+                                <li><Link to="/contacto" className="text-stone-600 hover:text-amber-600 transition-colors text-sm">Contacto</Link></li>
+                            </ul>
                         </div>
+
+                        {/* Contact Info */}
                         <div>
-                            <h4 className="font-semibold mb-4">Contacto</h4>
-                            <div className="space-y-2 text-background/60">
-                                <div>+52 (123) 456-7890</div>
-                                <div>info@laras.com</div>
-                                <div>Calle Principal #123</div>
-                            </div>
+                            <h4 className="font-bold text-stone-800 mb-4 uppercase tracking-wider text-sm">Contacto</h4>
+                            <ul className="space-y-2 text-stone-600 text-sm">
+                                <li className="flex items-center gap-2">
+                                    <MapPin className="w-4 h-4 text-amber-600" />
+                                    <span>Calle Principal #123, Centro</span>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <span className="text-amber-600">📞</span>
+                                    <span>+52 (123) 456-7890</span>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <span className="text-amber-600">✉️</span>
+                                    <span>hola@laras.mx</span>
+                                </li>
+                            </ul>
                         </div>
+
+                        {/* Hours & Social */}
                         <div>
-                            <h4 className="font-semibold mb-4">Síguenos</h4>
-                            <div className="flex gap-4">
-                                <a href="#" className="p-2 bg-background/10 rounded-lg hover:bg-primary transition-colors">
-                                    <Facebook className="h-5 w-5" />
+                            <h4 className="font-bold text-stone-800 mb-4 uppercase tracking-wider text-sm">Horarios</h4>
+                            <ul className="space-y-1 text-stone-600 text-sm mb-6">
+                                <li>Lunes - Viernes: 9:00 AM - 11:00 PM</li>
+                                <li>Sábado - Domingo: 10:00 AM - 12:00 AM</li>
+                            </ul>
+                            <h4 className="font-bold text-stone-800 mb-3 uppercase tracking-wider text-sm">Síguenos</h4>
+                            <div className="flex gap-3">
+                                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-stone-600 hover:bg-amber-500 hover:text-white transition-all">
+                                    <Facebook className="w-5 h-5" />
                                 </a>
-                                <a href="#" className="p-2 bg-background/10 rounded-lg hover:bg-primary transition-colors">
-                                    <Instagram className="h-5 w-5" />
+                                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-stone-600 hover:bg-amber-500 hover:text-white transition-all">
+                                    <Instagram className="w-5 h-5" />
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div className="border-t border-background/20 pt-8 text-center text-background/60">
-                        <p>© 2024 LARAS Restaurant. Todos los derechos reservados.</p>
+
+                    {/* Bottom Bar */}
+                    <div className="border-t border-amber-200 pt-8">
+                        <p className="text-stone-500 text-sm text-center">
+                            © 2024 LARAS Restaurant. Todos los derechos reservados.
+                        </p>
                     </div>
                 </div>
             </footer>
