@@ -8,7 +8,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 const HomePage = React.lazy(() => import('./pages/public/HomePage'));
 const MenuPage = React.lazy(() => import('./pages/public/MenuPage'));
 const AboutPage = React.lazy(() => import('./pages/public/AboutPage'));
-const ContactPage = React.lazy(() => import('./pages/public/ContactPage'));
+
 const PublicPromotionsPage = React.lazy(() => import('./pages/public/PromotionsPage'));
 
 const LoginPage = React.lazy(() => import('./pages/admin/LoginPage'));
@@ -50,7 +50,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/menu" element={<MenuPage />} />
               <Route path="/nosotros" element={<AboutPage />} />
-              <Route path="/contacto" element={<ContactPage />} />
+
               <Route path="/promociones" element={<PublicPromotionsPage />} />
 
               {/* Admin Routes */}
