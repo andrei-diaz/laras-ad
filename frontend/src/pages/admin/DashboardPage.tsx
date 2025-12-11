@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
     LayoutDashboard,
-    UtensilsCrossed,
     Tag,
     Clock,
     MessageSquare,
-    Star,
     Settings,
     LogOut
 } from 'lucide-react';
@@ -17,19 +15,16 @@ const DashboardPage: React.FC = () => {
 
     const menuItems = [
         { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard', active: true },
-        { icon: UtensilsCrossed, label: 'Menú', href: '/admin/menu' },
         { icon: Tag, label: 'Promociones', href: '/admin/promotions' },
         { icon: Clock, label: 'Horarios', href: '/admin/schedule' },
         { icon: MessageSquare, label: 'Mensajes', href: '/admin/messages' },
-        { icon: Star, label: 'Reseñas', href: '/admin/reviews' },
         { icon: Settings, label: 'Configuración', href: '/admin/settings' },
     ];
 
     const stats = [
-        { label: 'Platillos', value: '0', description: 'En el menú' },
         { label: 'Promociones', value: '0', description: 'Activas' },
         { label: 'Mensajes', value: '0', description: 'Sin leer' },
-        { label: 'Reseñas', value: '0', description: 'Pendientes' },
+        { label: 'Horarios', value: '4', description: 'Configurados' },
     ];
 
     return (
@@ -46,8 +41,8 @@ const DashboardPage: React.FC = () => {
                             key={item.label}
                             to={item.href}
                             className={`flex items-center gap-3 px-4 py-2 rounded-md transition-colors ${item.active
-                                    ? 'bg-primary text-primary-foreground'
-                                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                                ? 'bg-primary text-primary-foreground'
+                                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                                 }`}
                         >
                             <item.icon className="h-5 w-5" />
@@ -99,14 +94,7 @@ const DashboardPage: React.FC = () => {
                 {/* Quick Actions */}
                 <div className="bg-card rounded-lg border border-border p-6">
                     <h3 className="text-lg font-semibold mb-4">Acciones rápidas</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <Link
-                            to="/admin/menu"
-                            className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border hover:bg-muted transition-colors"
-                        >
-                            <UtensilsCrossed className="h-8 w-8 text-primary" />
-                            <span className="text-sm">Agregar platillo</span>
-                        </Link>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         <Link
                             to="/admin/promotions"
                             className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border hover:bg-muted transition-colors"

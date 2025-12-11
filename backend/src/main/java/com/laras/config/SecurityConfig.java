@@ -59,6 +59,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/status").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/info/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/testimonials/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/google-reviews").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/google-place-info").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         // Admin endpoints - require authentication

@@ -3,12 +3,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
     LayoutDashboard,
-    UtensilsCrossed,
     FileImage,
     Tag,
     Clock,
     MessageSquare,
-    Star,
     Settings,
     LogOut,
     Menu,
@@ -21,12 +19,10 @@ interface AdminLayoutProps {
 
 const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
-    { icon: UtensilsCrossed, label: 'Menú', href: '/admin/menu' },
     { icon: FileImage, label: 'Plantilla Menú', href: '/admin/menu-template' },
     { icon: Tag, label: 'Promociones', href: '/admin/promotions' },
     { icon: Clock, label: 'Horarios', href: '/admin/schedule' },
     { icon: MessageSquare, label: 'Mensajes', href: '/admin/messages' },
-    { icon: Star, label: 'Reseñas', href: '/admin/reviews' },
     { icon: Settings, label: 'Configuración', href: '/admin/settings' },
 ];
 
@@ -77,8 +73,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                                 to={item.href}
                                 onClick={() => setSidebarOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-2.5 rounded-md transition-colors ${isActive
-                                        ? 'bg-primary text-primary-foreground'
-                                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                                     }`}
                             >
                                 <item.icon className="h-5 w-5" />

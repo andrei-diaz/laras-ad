@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AdminLayout from '../../components/admin/AdminLayout';
 import menuTemplateService, { MenuTemplateItem, MenuTemplateItemInput } from '../../services/menuTemplateService';
-import { Plus, Pencil, Trash2, Eye, EyeOff, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, Pencil, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 
 const SECTIONS = [
+    { value: 'combos', label: 'Combos', menuNumber: 4 },
+    { value: 'tacos', label: 'Tacos y Hamburguesas', menuNumber: 3 },
+    { value: 'snacks', label: 'Snacks y Papas', menuNumber: 2 },
     { value: 'bebidas', label: 'Bebidas y Aguas', menuNumber: 1 },
-    { value: 'snacks', label: 'Snacks', menuNumber: 2 },
-    { value: 'papas', label: 'Papas', menuNumber: 2 },
-    { value: 'tortas', label: 'Tortas Vegetarianas', menuNumber: 2 },
 ];
 
 const MenuTemplatePage: React.FC = () => {
@@ -48,12 +48,7 @@ const MenuTemplatePage: React.FC = () => {
         },
     });
 
-    const toggleActiveMutation = useMutation({
-        mutationFn: menuTemplateService.toggleActive,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['menu-template-items'] });
-        },
-    });
+
 
     const filteredItems = items.filter(item => item.menuSection === selectedSection);
 
@@ -98,11 +93,10 @@ const MenuTemplatePage: React.FC = () => {
                         <button
                             key={section.value}
                             onClick={() => setSelectedSection(section.value)}
-                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                selectedSection === section.value
-                                    ? 'bg-primary text-primary-foreground'
-                                    : 'bg-muted hover:bg-muted/80'
-                            }`}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${selectedSection === section.value
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-muted hover:bg-muted/80'
+                                }`}
                         >
                             {section.label}
                             <span className="ml-2 text-xs opacity-70">
@@ -135,11 +129,6 @@ const MenuTemplatePage: React.FC = () => {
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2">
                                             <h3 className="font-semibold">{item.name}</h3>
-                                            {!item.isActive && (
-                                                <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
-                                                    Oculto
-                                                </span>
-                                            )}
                                         </div>
                                         <p className="text-sm text-muted-foreground line-clamp-1">
                                             {item.description}
@@ -169,17 +158,7 @@ const MenuTemplatePage: React.FC = () => {
                                                 <ChevronDown className="h-4 w-4" />
                                             )}
                                         </button>
-                                        <button
-                                            onClick={() => toggleActiveMutation.mutate(item.id)}
-                                            className="p-2 hover:bg-muted rounded"
-                                            title={item.isActive ? 'Ocultar' : 'Mostrar'}
-                                        >
-                                            {item.isActive ? (
-                                                <Eye className="h-4 w-4 text-green-600" />
-                                            ) : (
-                                                <EyeOff className="h-4 w-4 text-muted-foreground" />
-                                            )}
-                                        </button>
+
                                         <button
                                             onClick={() => { setEditing(item); setShowModal(true); }}
                                             className="p-2 hover:bg-muted rounded"
@@ -363,11 +342,10 @@ const MenuItemModal: React.FC<MenuItemModalProps> = ({ item, defaultSection, onC
                                     key={type.value}
                                     type="button"
                                     onClick={() => setPriceType(type.value as any)}
-                                    className={`px-3 py-1.5 rounded-md text-sm ${
-                                        priceType === type.value
-                                            ? 'bg-primary text-primary-foreground'
-                                            : 'bg-muted hover:bg-muted/80'
-                                    }`}
+                                    className={`px-3 py-1.5 rounded-md text-sm ${priceType === type.value
+                                        ? 'bg-primary text-primary-foreground'
+                                        : 'bg-muted hover:bg-muted/80'
+                                        }`}
                                 >
                                     {type.label}
                                 </button>

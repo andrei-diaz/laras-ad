@@ -7,6 +7,7 @@ interface TestimonialsSectionProps {
     testimonials: Array<{
         author: TestimonialAuthor
         text: string
+        rating?: number
         href?: string
     }>
     className?: string
@@ -18,6 +19,9 @@ export function TestimonialsSection({
     testimonials,
     className
 }: TestimonialsSectionProps) {
+    // Duplicate testimonials to fill space and create seamless loop
+    const duplicatedTestimonials = [...testimonials, ...testimonials, ...testimonials, ...testimonials];
+
     return (
         <section className={cn(
             "bg-background text-foreground",
@@ -34,24 +38,41 @@ export function TestimonialsSection({
                     </p>
                 </div>
 
-                <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-                    <div className="group flex overflow-hidden p-2 [--gap:1rem] [gap:var(--gap)] flex-row [--duration:40s]">
-                        <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
-                            {[...Array(4)].map((_, setIndex) => (
-                                testimonials.map((testimonial, i) => (
-                                    <TestimonialCard
-                                        key={`${setIndex}-${i}`}
-                                        {...testimonial}
-                                    />
-                                ))
-                            ))}
-                        </div>
+                {/* Marquee Container */}
+                <div className="relative w-full overflow-hidden">
+                    {/* Infinite scroll track */}
+                    <div
+                        className="flex gap-4 hover:[animation-play-state:paused]"
+                        style={{
+                            animation: 'scroll 25s linear infinite',
+                            width: 'max-content'
+                        }}
+                    >
+                        {duplicatedTestimonials.map((testimonial, i) => (
+                            <TestimonialCard
+                                key={i}
+                                {...testimonial}
+                            />
+                        ))}
                     </div>
 
-                    <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/3 bg-gradient-to-r from-background sm:block" />
-                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-gradient-to-l from-background sm:block" />
+                    {/* Fade edges */}
+                    <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-background sm:block" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/4 bg-gradient-to-l from-background sm:block" />
                 </div>
             </div>
+
+            {/* Inline keyframes for infinite scroll */}
+            <style>{`
+                @keyframes scroll {
+                    0% {
+                        transform: translateX(0);
+                    }
+                    100% {
+                        transform: translateX(-50%);
+                    }
+                }
+            `}</style>
         </section>
     )
 }

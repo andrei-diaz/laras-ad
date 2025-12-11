@@ -1,90 +1,107 @@
 import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Instagram, Facebook } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 
 // ===== MENU-1: BEBIDAS Y AGUAS (Cyan overlays) =====
 const bebidasItems = [
-    { id: 'licuados', name: 'LICUADOS', description: 'Fresa, mango, guanábana o mix berrie, plátanos, melón, papaya, chocomilk.', priceHalf: 50, priceFull: 70, top: '14%', left: '5%', minHeight: '9%' },
-    { id: 'smoothies', name: 'SMOOTHIES', description: 'Mango, piña con mango y chamoy, plátano, fresa, mix berrie o piña natural.', priceHalf: 55, priceFull: 75, top: '23%', left: '5%' },
-    { id: 'sodas', name: 'SODAS', description: 'Coca Cola, Coca Cola Light, Fanta, Manzana, Sangría, Sprite y Ponche.', price: 27, top: '31.8%', left: '5%' },
-    { id: 'agua-frutas', name: 'AGUA DE FRUTAS', description: 'Piña, melón, mango, fresa, papaya, pepino con limón, limonada o guanábana.', priceHalf: 45, priceFull: 58, top: '40%', left: '5%' },
-    { id: 'chocolate', name: 'CHOCOLATE', description: 'Chocolate caliente con bombones.', priceHalf: 45, top: '49.9%', left: '5%', minHeight: '6%' },
-    { id: 'frappe', name: 'FRAPPÉ', description: 'Capuchino Moka', price: 50, top: '57%', left: '5%' },
-    { id: 'mangonada-frappe', name: 'MANGONADA FRAPPÉ', description: 'Mango, chamoy, chile en polvo y varita de tamarindo', priceHalf: 55, priceFull: 75, top: '63.4%', left: '5%' },
-    { id: 'cafe', name: 'CAFÉ', description: 'Estilo americano.', price: 25, top: '70.9%', left: '5%' },
+    { id: 'licuados', name: 'LICUADOS', description: 'Fresa, mango, guanábana o mix berrie, plátanos, melón, papaya, chocomilk.\n1/2 litro $50    1 litro $70', top: '14%', left: '5%', width: '22%', height: 'auto', fontSize: '9px' },
+    { id: 'smoothies', name: 'SMOOTHIES', description: 'Mango, piña con mango y chamoy, plátano, fresa, mix berrie o piña natural.\n1/2 litro $55    1 litro $75', top: '23%', left: '5%', width: '22%', height: 'auto', fontSize: '9px' },
+    { id: 'sodas', name: 'SODAS', description: 'Coca Cola, Coca Cola Light, Fanta, Manzana, Sangría, Sprite y Ponche. $27', top: '31.8%', left: '5%', width: '22%', height: 'auto', fontSize: '9px' },
+    { id: 'agua-frutas', name: 'AGUA DE FRUTAS', description: 'Piña, melón, mango, fresa, papaya, pepino con limón, limonada o guanábana.\n1/2 litro $45    1 litro $58', top: '40%', left: '5%', width: '22%', height: 'auto', fontSize: '9px' },
+    { id: 'chocolate', name: 'CHOCOLATE', description: 'Chocolate caliente con bombones.\n1/2 litro $45', top: '49.9%', left: '5%', width: '22%', height: 'auto', fontSize: '9px' },
+    { id: 'frappe', name: 'FRAPPÉ', description: 'Capuchino Moka $50', top: '57%', left: '5%', width: '22%', height: '30px', fontSize: '9px' },
+    { id: 'mangonada-frappe', name: 'MANGONADA FRAPPÉ', description: 'Mango, chamoy, chile en polvo y varita de tamarindo\n1/2 litro $55    1 litro $75', top: '63.6%', left: '5%', width: '22%', height: '55px', fontSize: '9px' },
+    { id: 'cafe', name: 'CAFÉ', description: 'Estilo americano. $25', top: '73%', left: '5%', width: '22%', height: 'auto', fontSize: '9px' },
 ];
 
 // ===== MENU-2: SNACKS (Pink overlays) =====
 const snacksItems = [
-    { id: 'sandwich-turkey', name: 'SÁNDWICH TURKEY', description: 'Mayonesa, aguacate, tomate, lechuga, jamón de pavo, quesos.', price: 48, top: '6%', left: '2%' },
-    { id: 'sandwich-veggie', name: 'SÁNDWICH VEGGIE', description: 'Mayonesa, aguacate, tomate, lechuga, bologna, quesos.', price: 55, top: '14%', left: '2%' },
-    { id: 'sandwich-pollo', name: 'SÁNDWICH DE POLLO', description: 'Mayonesa, aguacate, tomate, lechuga, pechuga de pollo marinado especial, quesos.', price: 60, top: '22%', left: '2%' },
-    { id: 'sincronizada-res', name: 'SINCRONIZADA DE RES/POLLO', description: 'Carne de res salteada con morrón y cebolla, quesos, tortilla de harina.', price: 98, top: '30%', left: '2%' },
-    { id: 'sincronizada-veg', name: 'SINCRONIZADA VEGETARIANA', description: 'Fajita de gluten al jengibre salteada con morrón, cebolla, quesos, tortilla de harina.', price: 115, top: '40%', left: '2%' },
-    { id: 'tenders', name: 'TENDERS', description: 'Pechuga de pollo, quesos, papas a la francesa incluye refresco.', price: 160, top: '50%', left: '2%' },
-    { id: 'boneless-snack', name: 'BONELESS', description: 'Papas a la francesa, aderezo Ranch, zanahoria y Apio.', price: 125, top: '60%', left: '2%' },
+    { id: 'sandwich-turkey', name: 'SÁNDWICH \nTURKEY', description: 'Mayonesa, aguacate, tomate, lechuga, jamón de pavo, quesos. $48', top: '12%', left: '2%', width: '23%', height: '43px', fontSize: '8.2px', icon: 'chicken', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'sandwich-veggie', name: 'SÁNDWICH \nVEGGIE', description: 'Mayonesa, aguacate, tomate, lechuga, bologna, quesos. $55', top: '19.6%', left: '2%', width: '23%', height: '43px', fontSize: '8.5px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'sandwich-pollo', name: 'SÁNDWICH \nDE POLLO', description: 'Mayonesa, aguacate, tomate, lechuga, pechuga de pollo marinado especial, quesos. $60', top: '27.3%', left: '2%', width: '23%', height: 'auto', fontSize: '8.5px', icon: 'chicken', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'sincronizada-res', name: 'SINCRONIZADA \nDE RES/POLLO', description: 'Carne de res salteada con morrón y cebolla, quesos, tortilla de harina. $98', top: '35.5%', left: '2%', width: '23%', height: 'auto', fontSize: '8.5px', icon: 'cow', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'sincronizada-veg', name: 'SINCRONIZADA \nVEGETARIANA', description: 'Fajita de gluten al jengibre salteada con morrón, cebolla, quesos, tortilla de harina. $115', top: '43.58%', left: '2%', width: '23%', height: 'auto', fontSize: '8.3px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'tenders', name: 'TENDERS', description: 'Pechuga de pollo, quesos, papas a la francesa incluye refresco. Elige tu aderezo: Ranch, Búfalo, Laras, Salsa habanera y/o limón. $160', top: '52%', left: '2%', width: '23%', height: '45px', fontSize: '8.5px', icon: 'chicken', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'boneless-snack', name: 'BONELESS', description: 'Papas a la francesa, \naderezo Ranch, zanahoria y Apio. $125', top: '59.6%', left: '2%', width: '23%', height: 'auto', fontSize: '8.5px', icon: 'chicken', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
 ];
 
 // ===== MENU-2: PAPAS (Blue overlays) =====
 const papasItems = [
-    { id: 'papas', name: 'PAPAS', description: 'A la francesa naturales $49. Con queso y aderezo Laras $60.', price: 49, top: '18%', left: '20%' },
-    { id: 'beef-bowl', name: 'BEEF BOWL', description: 'Papas a la francesa con queso, aderezo Laras con carne.', price: 115, top: '28%', left: '20%' },
-    { id: 'salchipapas', name: 'SALCHIPAPAS', description: 'Papas a la francesa con queso, aderezo Laras con salchicha veggie.', price: 120, top: '38%', left: '20%' },
-    { id: 'boneless-bowl', name: 'BONELESS BOWL', description: 'Papas a la francesa con queso, aderezo Laras, boneless bañados en salsa búfalo.', price: 140, top: '48%', left: '20%' },
-    { id: 'chicken-bowl', name: 'CHICKEN BOWL', description: 'Papas a la francesa con queso, aderezo Laras con pollo.', price: 115, top: '58%', left: '20%' },
+    { id: 'papas', name: 'PAPAS', description: 'A la francesa naturales. $49\nA la francesa con queso y aderezo Laras. $60', top: '28%', left: '26.5%', width: '22%', height: 'auto', fontSize: '8.6px' },
+    { id: 'beef-bowl', name: 'BEEF BOWL', description: 'Papas a la francesa con queso, aderezo Laras con carne. $115', top: '35.5%', left: '26.5%', width: '22%', height: '40px', fontSize: '8.7px', icon: 'cow', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'salchipapas', name: 'SALCHIPAPAS', description: 'Papas a la francesa con \nqueso, aderezo Laras con salchicha veggie. $120', top: '43%', left: '26.5%', width: '22%', height: 'auto', fontSize: '8.5px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'boneless-bowl', name: 'BONELESS \nBOWL', description: 'Papas a la francesa con queso, aderezo Laras, boneless bañados en salsa búfalo. $140', top: '51%', left: '26.5%', width: '22%', height: '59px', fontSize: '8px', icon: 'chicken', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'chicken-bowl', name: 'CHICKEN BOWL', description: 'Papas a la francesa con \nqueso, aderezo Laras con \npollo. $115', top: '60.2%', left: '26.5%', width: '22%', height: 'auto', fontSize: '8px', icon: 'chicken', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
 ];
 
 // ===== MENU-2: TORTAS VEGETARIANAS (Green overlays) =====
 const tortasVegItems = [
-    { id: 'milanesa-enchilado', name: 'MILANESA DE GLUTEN ENCHILADO', description: 'Mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras.', price: 115, top: '50%', left: '55%' },
-    { id: 'milanesa-empanizado', name: 'MILANESA DE GLUTEN EMPANIZADO', description: 'Mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras.', price: 115, top: '50%', left: '78%' },
-    { id: 'fajita-gluten', name: 'FAJITA DE GLUTEN AL JENGIBRE', description: 'Mayonesa, tomate, morrón, cebolla, aguacate, quesos, lechuga y aderezo Laras.', price: 115, top: '65%', left: '55%' },
-    { id: 'gluten-pastor', name: 'GLUTEN AL PASTOR', description: 'Trocitos de piña, mayonesa, tomate, aguacate, queso, aderezo Laras y cebolla.', price: 115, top: '80%', left: '55%' },
+    { id: 'milanesa-enchilado', name: 'MILANESA \nDE GLUTEN \nENCHILADO', description: 'Mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras.\n$115', top: '50%', left: '52.6%', width: '21%', height: '66px', fontSize: '8.3px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'milanesa-empanizado', name: 'MILANESA \nDE GLUTEN \nEMPANIZADO', description: 'Mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras.\n$115', top: '50%', left: '76.3%', width: '20%', height: '63.4px', fontSize: '7.69px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'fajita-gluten', name: 'FAJITA \nDE GLUTEN \nAL JENGIBRE', description: 'Mayonesa, tomate, morrón, cebolla, aguacate, quesos, lechuga y aderezo Laras.\n$115', top: '62%', left: '50.052%', width: '29%', height: '74.3px', fontSize: '9px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'gluten-pastor', name: 'GLUTEN \nAL PASTOR', description: 'Trocitos de piña, mayonesa, tomate, aguacate, queso, aderezo Laras y cebolla.\n$115', top: '75.4%', left: '50.052%', width: '29%', height: '63px', fontSize: '9px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
 ];
 
-// ===== MENU-3: TACOS (Orange overlays) =====
+// ===== MENU-3: HAMBURGUESAS LEFT SIDE (Gray overlays) =====
+const hamburguesasItems = [
+    { id: 'classic-beef', name: 'CLASSIC BEEF', description: 'Carne de res preparación especial 1/4 de libra, \nmostaza, mayonesa, aguacate, jamón de pavo, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $98', top: '15%', left: '2%', width: '22%', height: '70px', fontSize: '7.8px', icon: 'cow', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'classic-veggie', name: 'CLASSIC VEGGIE', description: 'Carne vegetal preparación especial 1/4 de libra, \nmostaza, mayonesa, jamón vegetariano, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $115', top: '15%', left: '25%', width: '22.3%', height: '70px', fontSize: '7.8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'hamburguesa-doble', name: 'HAMBURGUESA \nDOBLE', description: 'Doble carne de res \npreparación especial 1/4 de libra, mostaza, mayonesa, aguacate, jamón de pavo, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $125', top: '27%', left: '2%', width: '22.3%', height: '79px', fontSize: '7.8px', icon: 'cow' },
+    { id: 'hamburguesa-doble-veggie', name: 'HAMBURGUESA \nDOBLE VEGGIE', description: 'Doble carne vegetal \npreparación especial 1/4 de libra, mostaza, mayonesa, aguacate, jamón vegetariano, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $135', top: '27%', left: '25%', width: '22.3%', height: '79px', fontSize: '7.8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'salchi-burguer', name: 'SALCHI-BURGUER', description: 'Carne de res preparación \nespecial 180 gr., mostaza, mayonesa, aguacate, jamón de pavo, salchichas, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $130', top: '41.6%', left: '2%', width: '22.3%', height: '76px', fontSize: '7.8px', icon: 'cow' },
+    { id: 'salchi-burguer-veggie', name: 'SALCHI-BURGUER \nVEGGIE', description: 'Carne vegetariana preparado \nespecial, salchicha vegetal, mayonesa, mostaza pepinillos, tomate, lechuga, bologna, mezcla de 3 quesos y aderezo Laras. $140', top: '41.6%', left: '25%', width: '22.3%', height: '76px', fontSize: '7.8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'hamburguesa-jalapeno', name: 'HAMBURGUESA \nJALAPEÑO', description: 'Carne de res preparación especial 180 gr., mostaza, mayonesa, aguacate, jamón de pavo, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $115', top: '55%', left: '2%', width: '22.3%', height: '82px', fontSize: '8px', icon: 'cow' },
+    { id: 'hamburguesa-jalapeno-veggie', name: 'HAMBURGUESA \nJALAPEÑO VEGGIE', description: 'Carne vegetal preparación especial 180 gr., mostaza, mayonesa, aguacate, jamón vegetariano, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $120', top: '55%', left: '25%', width: '22.3%', height: '82px', fontSize: '8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+];
+
+// ===== MENU-3: PARA LOS AMANTES DE LAS CARNES - RIGHT SIDE (Orange overlays) =====
+const carnesItems = [
+    { id: 'chicken-tender', name: 'CHICKEN TENDER \nBURGER', description: 'Tenders empanizados con \nsalsa búfalo, queso, lechuga, tomate y aderezo Laras. $138', top: '38%', left: '52%', width: '24%', height: '57px', fontSize: '8px', icon: 'chicken' },
+    { id: 'hamburguesa-bbq', name: 'HAMBURGUESA \nBBQ', description: 'Carne de res preparación \nespecial 180 gr., aderezada con salsa BBQ especial, mostaza, cebolla a la plancha, mayonesa, aguacate, jamón de pavo, mezcla de quesos, tomate, lechuga, pepinillos y aderezo Laras. $128', top: '47.128667%', left: '52%', width: '24%', height: '100px', fontSize: '8.5px', icon: 'cow' },
+    { id: 'hamburguesa-bbq-veggie', name: 'HAMBURGUESA \nBBQ VEGGIE', description: 'Carne vegetal preparación \nespecial 180 gr., aderezada con salsa BBQ especial, mostaza, mayonesa, aguacate, jamón vegetariano, mezcla de quesos, cebolla a la plancha, tomate, lechuga, pepinillos y aderezo Laras. $130', top: '63.28%', left: '52%', width: '24%', height: '98px', fontSize: '8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'hamburguesa-hawaiana', name: 'HAMBURGUESA \nHAWAIANA', description: 'Carne de res preparación \nespecial 180 gr., rebanada de piña asada, salsa especial de piña, mostaza, mayonesa, aguacate, jamón de pavo, mezcla de quesos, tomate, lechuga y aderezo Laras. $130', top: '79.02%', left: '52%', width: '24%', height: '76px', fontSize: '8px', icon: 'cow' },
+];
+
+// ===== MENU-4: TACOS LEFT SIDE (Dark overlays) =====
 const tacosItems = [
-    { id: 'tacos-res', name: 'TACOS DE CARNE DE RES', description: 'Con morrón y cebolla, cilantro y tortilla de maíz.', price: 20, top: '12%', left: '2%' },
-    { id: 'tacos-veg-enchilados', name: 'TACOS VEGETARIANOS ENCHILADOS', description: 'Gluten enchilado salteado con morrón y cebolla.', price: 25, top: '12%', left: '25%' },
-    { id: 'tacos-vegetarianos', name: 'TACOS VEGETARIANOS', description: 'Gluten al jengibre salteado con morrón y cebolla.', price: 25, top: '26%', left: '2%' },
-    { id: 'tacos-pastor-veggie', name: 'TACOS AL PASTOR VEGGIE', description: 'Salteados con trocitos de piña y cebolla y tortilla de maíz.', price: 25, top: '26%', left: '25%' },
+    { id: 'tacos-res', name: 'TACOS DE \nCARNE DE RES', description: 'Con morrón y cebolla, \ncilantro y tortilla de maíz. $20 c/u', top: '21.8%', left: '2%', width: '23%', height: '55px', fontSize: '8px', icon: 'cow' },
+    { id: 'tacos-veg-enchilados', name: 'TACOS \nVEGETARIANOS \nENCHILADOS', description: 'Gluten enchilado salteado con morrón y cebolla. $25 c/u', top: '21.8%', left: '25%', width: '22%', height: '55px', fontSize: '8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'tacos-vegetarianos', name: 'TACOS \nVEGETARIANOS', description: 'Gluten al jengibre salteado \ncon morrón y cebolla. $25 c/u', top: '32%', left: '2%', width: '22%', height: '55px', fontSize: '8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
+    { id: 'tacos-pastor-veggie', name: 'TACOS AL \nPASTOR VEGGIE', description: 'Salteados con trocitos \nde piña y cebolla y tortilla de maíz. $25 c/u', top: '32%', left: '25%', width: '22%', height: '55px', fontSize: '8px', icon: 'veggie', iconSize: '26px', iconTop: '1px', iconRight: '1px' },
 ];
 
-// ===== MENU-3: TORTAS CON CARNITA (Red overlays) =====
+// ===== MENU-4: TORTAS CON CARNITA (Red overlays) =====
 const tortasCarnitaItems = [
-    { id: 'fajita-beef', name: 'FAJITA BEEF', description: 'Carne de res marinado especial, morrón, cebolla, mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras.', price: 98, top: '48%', left: '2%' },
-    { id: 'chicken-fajita', name: 'CHICKEN FAJITA', description: 'Pechuga de pollo marinado especial, morrón, cebolla, mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras.', price: 98, top: '48%', left: '25%' },
-    { id: 'arrachera-cheese', name: 'ARRACHERA CHEESE STEAK', description: 'Arrachera americana, morrón, cebolla, mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras.', price: 135, top: '70%', left: '2%' },
+    { id: 'fajita-beef', name: 'FAJITA BEEF', description: 'Carne de res marinado \nespecial, morrón, cebolla, mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras. $98', top: '53%', left: '2%', width: '22%', height: '65px', fontSize: '8px', icon: 'cow' },
+    { id: 'chicken-fajita', name: 'CHICKEN FAJITA', description: 'Pechuga de pollo \nmarinado especial, \nmorrón, cebolla, mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras. $98', top: '53%', left: '25%', width: '22%', height: '65px', fontSize: '8px', icon: 'chicken' },
+    { id: 'arrachera-cheese', name: 'ARRACHERA \nCHEESE STEAK', description: 'Arrachera americana, \nmorrón, cebolla, mayonesa, tomate, aguacate, quesos, lechuga y aderezo Laras. $135', top: '65.4%', left: '0%', width: '26.37%', height: '67px', fontSize: '8px', icon: 'cow' },
 ];
 
 // ===== MENU-4: COMBOS (Purple overlays) =====
 const combosItems = [
-    { id: 'combo-1', name: 'COMBO #1', description: 'Fajita Beef o Chicken Fajita, más agua del día y papas.', price: 115, top: '22%', left: '52%' },
-    { id: 'combo-2', name: 'COMBO #2', description: 'Torta de Arrachera Cheese Steak, más agua del día y papas.', price: 150, top: '32%', left: '52%' },
-    { id: 'combo-3', name: 'COMBO #3', description: 'Torta vegetariana, más agua del día y papas.', price: 135, top: '42%', left: '52%' },
-    { id: 'combo-4', name: 'COMBO #4', description: 'Sándwich con jamón vegetariano + Chocomilk.', price: 75, top: '52%', left: '52%' },
-    { id: 'combo-5', name: 'COMBO #5', description: 'Sincronizada vegetariana, más agua del día y papas.', price: 135, top: '22%', left: '77%' },
-    { id: 'combo-6', name: 'COMBO #6', description: 'Sincronizada de Res o Pollo, más agua del día y papas.', price: 115, top: '32%', left: '77%' },
-    { id: 'combo-7', name: 'COMBO #7', description: 'Arma tu combo: Elige tu hamburguesa + $15 y llévate una soda.', price: 15, top: '42%', left: '77%' },
-    { id: 'combo-8', name: 'COMBO #8', description: 'Sándwich de jamón de pavo + Chocomilk.', price: 70, top: '55%', left: '77%' },
-    { id: 'combo-9', name: 'COMBO #9', description: 'Sándwich de pollo + Chocomilk.', price: 90, top: '65%', left: '77%' },
+    { id: 'combo-1', name: 'COMBO #1', description: 'Fajita Beef o Chicken \nFajita, más agua del \ndía y papas. $115', top: '36%', left: '52%', width: '22%', height: 'auto', fontSize: '8.5px', icon: 'cow' },
+    { id: 'combo-2', name: 'COMBO #2', description: 'Torta de Arrachera \nCheese Steak, más \nagua del día y papas. $150', top: '43%', left: '52%', width: '22%', height: '45px', fontSize: '8.5px', icon: 'cow' },
+    { id: 'combo-3', name: 'COMBO #3', description: 'Torta vegetariana, más \nagua del día y papas. $135', top: '50.6%', left: '52%', width: '22%', height: '37.7px', fontSize: '8.5px', icon: 'veggie' },
+    { id: 'combo-4', name: 'COMBO #4', description: 'Sándwich con jamón vegetariano + \nChocomilk. $75', top: '56.7%', left: '52%', width: '22%', height: '43px', fontSize: '8.5px', icon: 'veggie' },
+    { id: 'combo-5', name: 'COMBO #5', description: 'Sincronizada \nvegetariana, más agua \ndel día y papas. $135', top: '36%', left: '74.5%', width: '22%', height: '43.4px', fontSize: '8.5px', icon: 'veggie' },
+    { id: 'combo-6', name: 'COMBO #6', description: 'Sincronizada de Res o \nPollo, más agua del día y papas. $115', top: '42.8%', left: '74.5%', width: '22%', height: '45.5px', fontSize: '8.5px', icon: 'cow' },
+    { id: 'combo-7', name: 'COMBO #7', description: 'Arma tu combo: Elige \ntu hamburguesa (el precio \nmarcado en el menú) + $15 y llévate una soda.', top: '50.3%', left: '74.5%', width: '22%', height: '49px', fontSize: '8.5px', icon: 'veggie' },
+    { id: 'combo-8', name: 'COMBO #8', description: 'Sándwich de jamón de \npavo + Chocomilk. $70', top: '58%', left: '74.5%', width: '22%', height: 'auto', fontSize: '8.5px', icon: 'veggie' },
+    { id: 'combo-9', name: 'COMBO #9', description: 'Sándwich de pollo + Chocomilk. $90', top: '62.9%', left: '74.5%', width: '22%', height: 'auto', fontSize: '8.5px', icon: 'cow' },
 ];
 
 // ===== MENU-4: SALSAS (Yellow overlays) =====
 const salsasItems = [
-    { id: 'ranch', name: 'RANCH', description: '', price: 0, top: '78%', left: '55%' },
-    { id: 'bbq', name: 'BBQ', description: '', price: 0, top: '78%', left: '78%' },
-    { id: 'bufalo', name: 'BUFALO', description: '', price: 0, top: '88%', left: '78%' },
-    { id: 'bbq-chipotle', name: 'BBQ CHIPOTLE', description: '', price: 0, top: '95%', left: '52%' },
+    { id: 'salsa', name: '', description: 'Salsa extra $10', top: '93.06%', left: '68.5%', width: '18%', height: 'auto', fontSize: '6px' },
 ];
 
-// Menu pages configuration
+// Menu pages configuration (reversed order: 4, 3, 2, 1)
 const menuPages = [
-    { id: 1, title: 'Bebidas y Aguas', image: '/images/menu-1.png' },
-    { id: 2, title: 'Snacks y Papas', image: '/images/menu-2.png' },
-    { id: 3, title: 'Tacos y Hamburguesas', image: '/images/menu-3.png' },
     { id: 4, title: 'Combos', image: '/images/menu-4.png' },
+    { id: 3, title: 'Tacos y Hamburguesas', image: '/images/menu-3.png' },
+    { id: 2, title: 'Snacks y Papas', image: '/images/menu-2.png' },
+    { id: 1, title: 'Bebidas y Aguas', image: '/images/menu-1.png' },
 ];
 
 const MenuPage: React.FC = () => {
@@ -111,17 +128,60 @@ const MenuPage: React.FC = () => {
         return () => { emblaApi.off('select', onSelect); };
     }, [emblaApi]);
 
-    // Render overlay helper
-    const renderOverlay = (item: any, bgColor: string, width: string = '20%') => (
+    // Render overlay helper - each item can have: width, height, fontSize, icon
+    // Put price in the description string for full control
+    // icon: name of icon file in /images/food-icons/ (without extension)
+    // textColor: 'white' for light text on dark backgrounds
+    const renderOverlay = (item: any, bgColor: string, defaultWidth: string = '20%', textColor: string = 'dark') => (
         <div
             key={item.id}
-            className={`absolute ${bgColor} border border-black/20 px-1 py-0.5`}
-            style={{ top: item.top, left: item.left, width, minHeight: item.minHeight || 'auto' }}
+            className={`absolute ${bgColor} px-1 py-0.5`}
+            style={{
+                top: item.top,
+                left: item.left,
+                width: item.width || defaultWidth,
+                height: item.height || 'auto',
+                minHeight: item.minHeight || 'auto'
+            }}
         >
-            <h3 className="font-black text-[9px] text-stone-900 uppercase tracking-wide leading-tight">{item.name}</h3>
-            {item.description && <p className="text-[7px] text-stone-700 leading-tight">{item.description}</p>}
-            {item.price > 0 && <div className="text-[8px] text-stone-800 font-bold">${item.price}</div>}
-            {item.priceHalf && <div className="text-[7px] text-stone-800">1/2L ${item.priceHalf} {item.priceFull && `| 1L $${item.priceFull}`}</div>}
+            {/* Food icon - customize with iconSize, iconTop, iconRight */}
+            {item.icon && (
+                <img
+                    src={`/images/food-icons/${item.icon}.png`}
+                    alt={item.icon}
+                    className="absolute object-contain"
+                    style={{
+                        width: item.iconSize || '26px',
+                        height: item.iconSize || '26px',
+                        top: item.iconTop || '1px',
+                        right: item.iconRight || '1px'
+                    }}
+                />
+            )}
+            <h3
+                className={`font-black uppercase tracking-wide leading-tight ${textColor === 'white' ? 'text-white' : 'text-stone-900'}`}
+                style={{ fontSize: item.fontSize || '9px', paddingRight: item.icon ? '22px' : '0' }}
+            >
+                {item.name.split('\n').map((line: string, i: number) => (
+                    <span key={i}>
+                        {line}
+                        {i < item.name.split('\n').length - 1 && <br />}
+                    </span>
+                ))}
+            </h3>
+            {item.description && (
+                <p
+                    className={`leading-tight ${textColor === 'white' ? 'text-white/90' : 'text-stone-700'}`}
+                    style={{ fontSize: item.fontSize ? `calc(${item.fontSize} * 0.78)` : '7px' }}
+                >
+                    {item.description.split('\n').map((line: string, i: number) => (
+                        <span key={i}>
+                            {line}
+                            {i < item.description.split('\n').length - 1 && <br />}
+                        </span>
+                    ))}
+                </p>
+            )}
         </div>
     );
 
@@ -173,7 +233,7 @@ const MenuPage: React.FC = () => {
                         {menuPages.map((page, index) => (
                             <div
                                 key={page.id}
-                                className={`flex-[0_0_90%] md:flex-[0_0_70%] lg:flex-[0_0_50%] min-w-0 px-4 transition-all duration-300 ${selectedIndex === index ? 'opacity-100 scale-100' : 'opacity-40 scale-95'
+                                className={`flex-[0_0_80%] md:flex-[0_0_55%] lg:flex-[0_0_40%] min-w-0 px-4 transition-all duration-300 ${selectedIndex === index ? 'opacity-100 scale-100' : 'opacity-40 scale-95'
                                     }`}
                             >
                                 <div
@@ -183,35 +243,37 @@ const MenuPage: React.FC = () => {
                                 >
                                     <img src={page.image} alt={page.title} className="w-full h-full object-contain" />
 
-                                    {/* MENU 1: Bebidas - Cyan */}
-                                    {index === 0 && (
+                                    {/* MENU 1: Bebidas - White */}
+                                    {page.id === 1 && (
                                         <div className="absolute inset-0">
-                                            {bebidasItems.map(item => renderOverlay(item, 'bg-cyan-200/90', '22%'))}
+                                            {bebidasItems.map(item => renderOverlay(item, 'bg-white', '22%'))}
                                         </div>
                                     )}
 
                                     {/* MENU 2: Snacks, Papas, Tortas Veg */}
-                                    {index === 1 && (
+                                    {page.id === 2 && (
                                         <div className="absolute inset-0">
-                                            {snacksItems.map(item => renderOverlay(item, 'bg-pink-200/90', '18%'))}
-                                            {papasItems.map(item => renderOverlay(item, 'bg-blue-200/90', '18%'))}
-                                            {tortasVegItems.map(item => renderOverlay(item, 'bg-green-200/90', '20%'))}
+                                            {snacksItems.map(item => renderOverlay(item, 'bg-white', '18%'))}
+                                            {papasItems.map(item => renderOverlay(item, 'bg-white', '18%'))}
+                                            {tortasVegItems.map(item => renderOverlay(item, 'bg-[rgb(68,118,74)]', '20%', 'white'))}
                                         </div>
                                     )}
 
-                                    {/* MENU 3: Tacos, Tortas Carnita */}
-                                    {index === 2 && (
+                                    {/* MENU 3: Hamburguesas, Carnes */}
+                                    {page.id === 3 && (
                                         <div className="absolute inset-0">
-                                            {tacosItems.map(item => renderOverlay(item, 'bg-orange-200/90', '22%'))}
-                                            {tortasCarnitaItems.map(item => renderOverlay(item, 'bg-red-200/90', '22%'))}
+                                            {hamburguesasItems.map(item => renderOverlay(item, 'bg-white', '22%'))}
+                                            {carnesItems.map(item => renderOverlay(item, 'bg-[rgb(192,111,54)]', '22%', 'white'))}
                                         </div>
                                     )}
 
-                                    {/* MENU 4: Combos, Salsas */}
-                                    {index === 3 && (
+                                    {/* MENU 4: Tacos, Tortas, Combos, Salsas */}
+                                    {page.id === 4 && (
                                         <div className="absolute inset-0">
-                                            {combosItems.map(item => renderOverlay(item, 'bg-purple-200/90', '22%'))}
-                                            {salsasItems.map(item => renderOverlay(item, 'bg-yellow-200/90', '18%'))}
+                                            {tacosItems.map(item => renderOverlay(item, 'bg-white', '22%'))}
+                                            {tortasCarnitaItems.map(item => renderOverlay(item, 'bg-white', '22%'))}
+                                            {combosItems.map(item => renderOverlay(item, 'bg-white', '22%'))}
+                                            {salsasItems.map(item => renderOverlay(item, 'bg-white', '18%'))}
                                         </div>
                                     )}
                                 </div>
@@ -231,6 +293,58 @@ const MenuPage: React.FC = () => {
                     ))}
                 </div>
             </div>
+
+            {/* ===== FOOTER ===== */}
+            <footer className="bg-stone-500 text-white">
+                {/* Top Section */}
+                <div className="border-b border-white/20">
+                    <div className="container mx-auto px-6 py-8 flex flex-col lg:flex-row justify-between gap-8">
+                        {/* Left - Food icons */}
+                        <div className="flex items-center gap-4">
+                            <img src="/images/hamburger-svg.png" alt="Hamburger" className="h-16 w-auto object-contain opacity-80" />
+                            <img src="/images/taco-svg.png" alt="Taco" className="h-16 w-auto object-contain opacity-80" />
+                            <img src="/images/torta-svg.png" alt="Torta" className="h-16 w-auto object-contain opacity-80" />
+                            <img src="/images/smoothie-svg.png" alt="Smoothie" className="h-16 w-auto object-contain opacity-80" />
+                        </div>
+
+                        {/* Right - Navigation */}
+                        <div className="flex justify-start lg:justify-end gap-8 text-sm items-center">
+                            <Link to="/" className="hover:opacity-70 transition-opacity">Inicio</Link>
+                            <Link to="/menu" className="hover:opacity-70 transition-opacity">Menú</Link>
+                            <Link to="/#ubicacion" className="hover:opacity-70 transition-opacity">Contacto</Link>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Bottom Section with full-height dividers */}
+                <div className="flex flex-col lg:flex-row">
+                    {/* Logo + Tagline */}
+                    <div className="flex-1 flex items-center gap-6 px-8 py-10 lg:border-r border-white/20">
+                        <img src="/images/3d-logo.png" alt="LARAS" className="h-20 w-20 object-contain" />
+                        <div className="border-l border-white/30 pl-6">
+                            <p className="text-base uppercase tracking-widest font-medium">Tortas, hamburguesas,</p>
+                            <p className="text-base uppercase tracking-widest font-medium">cárnicas y vegetarianas</p>
+                        </div>
+                    </div>
+
+                    {/* Social Links */}
+                    <div className="flex items-center gap-6 px-12 py-10 lg:border-r border-white/20">
+                        <a href="https://www.instagram.com/laras.__/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                            <Instagram className="w-6 h-6" />
+                        </a>
+                        <a href="https://www.facebook.com/larasaurez/?locale=es_LA" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                            <Facebook className="w-6 h-6" />
+                        </a>
+                    </div>
+
+                    {/* Copyright */}
+                    <div className="flex items-center px-8 py-10">
+                        <p className="text-sm opacity-60">
+                            2024 Lara's Montemorelos. Todos los derechos reservados.
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 };
