@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import {
     LayoutDashboard,
     FileImage,
+    Image,
     Tag,
     Clock,
     MessageSquare,
@@ -19,6 +20,7 @@ interface AdminLayoutProps {
 
 const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
+    { icon: Image, label: 'Carrusel Hero', href: '/admin/hero-slides' },
     { icon: FileImage, label: 'Plantilla Menú', href: '/admin/menu-template' },
     { icon: Tag, label: 'Promociones', href: '/admin/promotions' },
     { icon: Clock, label: 'Horarios', href: '/admin/schedule' },

@@ -3,16 +3,28 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AdminLayout from '../../components/admin/AdminLayout';
 import menuTemplateService, { MenuTemplateItem, MenuTemplateItemInput } from '../../services/menuTemplateService';
 import { Plus, Pencil, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 const SECTIONS = [
+    // Menú 1
+    { value: 'bebidas', label: 'Bebidas', menuNumber: 1 },
+    // Menú 2
+    { value: 'snacks', label: 'Snacks', menuNumber: 2 },
+    { value: 'papas', label: 'Papas', menuNumber: 2 },
+    { value: 'tortas-veg', label: 'Tortas Vegetarianas', menuNumber: 2 },
+    // Menú 3
+    { value: 'hamburguesas', label: 'Hamburguesas', menuNumber: 3 },
+    { value: 'carnes', label: 'Carnes', menuNumber: 3 },
+    // Menú 4
+    { value: 'tacos', label: 'Tacos', menuNumber: 4 },
+    { value: 'tortas-carnita', label: 'Tortas con Carnita', menuNumber: 4 },
     { value: 'combos', label: 'Combos', menuNumber: 4 },
-    { value: 'tacos', label: 'Tacos y Hamburguesas', menuNumber: 3 },
-    { value: 'snacks', label: 'Snacks y Papas', menuNumber: 2 },
-    { value: 'bebidas', label: 'Bebidas y Aguas', menuNumber: 1 },
+    { value: 'salsas', label: 'Salsas', menuNumber: 4 },
 ];
 
 const MenuTemplatePage: React.FC = () => {
     const queryClient = useQueryClient();
+    const { isAuthenticated } = useAuth();
     const [selectedSection, setSelectedSection] = useState<string>('bebidas');
     const [showModal, setShowModal] = useState(false);
     const [editing, setEditing] = useState<MenuTemplateItem | null>(null);
@@ -21,6 +33,7 @@ const MenuTemplatePage: React.FC = () => {
     const { data: items = [], isLoading } = useQuery({
         queryKey: ['menu-template-items'],
         queryFn: menuTemplateService.getAllItems,
+        enabled: isAuthenticated,
     });
 
     const createMutation = useMutation({

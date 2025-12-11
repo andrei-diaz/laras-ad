@@ -16,7 +16,13 @@ export interface MenuTemplateItem {
     positionTop?: string;
     positionLeft?: string;
     positionWidth?: string;
+    positionHeight?: string;
     minHeight?: string;
+    fontSize?: string;
+    icon?: string;
+    iconSize?: string;
+    bgColor?: string;
+    textColor?: string;
     displayOrder: number;
     styleVariant?: string;
     isActive: boolean;
@@ -39,7 +45,13 @@ export interface MenuTemplateItemInput {
     positionTop?: string;
     positionLeft?: string;
     positionWidth?: string;
+    positionHeight?: string;
     minHeight?: string;
+    fontSize?: string;
+    icon?: string;
+    iconSize?: string;
+    bgColor?: string;
+    textColor?: string;
     displayOrder?: number;
     styleVariant?: string;
     isActive?: boolean;

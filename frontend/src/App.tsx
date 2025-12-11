@@ -14,6 +14,7 @@ const PublicPromotionsPage = React.lazy(() => import('./pages/public/PromotionsP
 const LoginPage = React.lazy(() => import('./pages/admin/LoginPage'));
 const DashboardPage = React.lazy(() => import('./pages/admin/DashboardPage'));
 const MenuTemplatePage = React.lazy(() => import('./pages/admin/MenuTemplatePage'));
+const HeroSlidesPage = React.lazy(() => import('./pages/admin/HeroSlidesPage'));
 
 const AdminPromotionsPage = React.lazy(() => import('./pages/admin/PromotionsPage'));
 const SchedulePage = React.lazy(() => import('./pages/admin/SchedulePage'));
@@ -60,6 +61,7 @@ function App() {
                 <Route path="/admin/dashboard" element={<DashboardPage />} />
 
                 <Route path="/admin/menu-template" element={<MenuTemplatePage />} />
+                <Route path="/admin/hero-slides" element={<HeroSlidesPage />} />
                 <Route path="/admin/promotions" element={<AdminPromotionsPage />} />
                 <Route path="/admin/schedule" element={<SchedulePage />} />
                 <Route path="/admin/settings" element={<SettingsPage />} />

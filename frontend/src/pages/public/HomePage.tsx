@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
     MapPin,
     Instagram,
     Facebook,
     Star,
+    ChevronLeft,
+    ChevronRight,
 } from 'lucide-react';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee';
+import heroSlideService, { HeroSlide } from '../../services/heroSlideService';
 
 // Fallback testimonials in case Google API fails
 const fallbackTestimonials = [
@@ -75,6 +78,8 @@ const HomePage: React.FC = () => {
     const [testimonials, setTestimonials] = useState(fallbackTestimonials);
     const [placeInfo, setPlaceInfo] = useState({ rating: 4.5, totalReviews: 100 });
     const [schedules, setSchedules] = useState<{ label: string; openTime: string; closeTime: string }[]>([]);
+    const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     useEffect(() => {
         const fetchGooglePlaceInfo = async () => {
@@ -131,7 +136,37 @@ const HomePage: React.FC = () => {
 
         fetchGooglePlaceInfo();
         fetchSchedule();
+
+        // Fetch hero slides
+        const fetchHeroSlides = async () => {
+            try {
+                const slides = await heroSlideService.getActiveSlides();
+                if (slides && slides.length > 0) {
+                    setHeroSlides(slides);
+                }
+            } catch (error) {
+                console.log('Using default hero image');
+            }
+        };
+        fetchHeroSlides();
     }, []);
+
+    // Auto-rotate carousel
+    useEffect(() => {
+        if (heroSlides.length <= 1) return;
+        const interval = setInterval(() => {
+            setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+        }, 5000); // Change every 5 seconds
+        return () => clearInterval(interval);
+    }, [heroSlides.length]);
+
+    const goToPrevSlide = useCallback(() => {
+        setCurrentSlide(prev => (prev - 1 + heroSlides.length) % heroSlides.length);
+    }, [heroSlides.length]);
+
+    const goToNextSlide = useCallback(() => {
+        setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+    }, [heroSlides.length]);
 
     return (
         <div className="font-sans antialiased text-stone-800">
@@ -207,19 +242,76 @@ const HomePage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Right Image */}
-                    <div className="relative h-[50vh] lg:h-screen w-full order-1 lg:order-2 bg-white flex items-center justify-end">
+                    {/* Right Image - Carousel */}
+                    <div className="relative h-[50vh] lg:h-screen w-full order-1 lg:order-2 bg-stone-900 overflow-hidden">
                         {/* Navigation on top of image */}
-                        <nav className="absolute top-6 -left-32 lg:top-10 lg:-left-40 hidden lg:flex items-center gap-8 text-sm font-medium text-stone-800 z-50">
+                        <nav className="absolute top-6 -left-32 lg:top-10 lg:-left-40 hidden lg:flex items-center gap-8 text-sm font-medium text-white z-50">
                             <Link to="/" className="border-b-2 border-amber-500 hover:opacity-80 transition-opacity">Inicio</Link>
                             <Link to="/menu" className="hover:opacity-80 transition-opacity">Menú</Link>
                             <a href="#ubicacion" className="hover:opacity-80 transition-opacity">Contacto</a>
                         </nav>
-                        <img
-                            src="/images/food/hero.png"
-                            alt="Hero Food"
-                            className="h-full object-contain object-right"
-                        />
+
+                        {/* Carousel Images */}
+                        {heroSlides.map((slide, index) => (
+                            <div
+                                key={slide.id}
+                                className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+                            >
+                                {slide.linkUrl ? (
+                                    <Link to={slide.linkUrl} className="block h-full w-full">
+                                        <img
+                                            src={slide.imageUrl}
+                                            alt={slide.title || 'Hero'}
+                                            className="h-full w-full object-cover"
+                                        />
+                                    </Link>
+                                ) : (
+                                    <img
+                                        src={slide.imageUrl}
+                                        alt={slide.title || 'Hero'}
+                                        className="h-full w-full object-cover"
+                                    />
+                                )}
+                                {/* Overlay text if title exists */}
+                                {slide.title && (
+                                    <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+                                        <h2 className="text-3xl lg:text-5xl font-black text-white uppercase tracking-tight">{slide.title}</h2>
+                                        {slide.subtitle && (
+                                            <p className="text-xl text-white/80 italic">{slide.subtitle}</p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+
+                        {/* Carousel Controls */}
+                        {heroSlides.length > 1 && (
+                            <>
+                                <button
+                                    onClick={goToPrevSlide}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/10 hover:bg-white/30 rounded-full text-white transition-all backdrop-blur-sm"
+                                >
+                                    <ChevronLeft className="h-6 w-6" />
+                                </button>
+                                <button
+                                    onClick={goToNextSlide}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 bg-white/10 hover:bg-white/30 rounded-full text-white transition-all backdrop-blur-sm"
+                                >
+                                    <ChevronRight className="h-6 w-6" />
+                                </button>
+
+                                {/* Dots */}
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                                    {heroSlides.map((_, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setCurrentSlide(index)}
+                                            className={`h-2 rounded-full transition-all ${index === currentSlide ? 'bg-white w-8' : 'bg-white/50 w-2 hover:bg-white/70'}`}
+                                        />
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </section>

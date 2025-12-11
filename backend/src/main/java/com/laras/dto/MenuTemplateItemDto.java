@@ -42,6 +42,14 @@ public class MenuTemplateItemDto {
     private String positionLeft;
     private String positionWidth;
     private String minHeight;
+    private String positionHeight;
+
+    // Styling
+    private String fontSize;
+    private String icon;
+    private String iconSize;
+    private String bgColor;
+    private String textColor;
 
     private Integer displayOrder;
     private String styleVariant;

@@ -5,7 +5,9 @@
       "Bash(node --version:*)",
       "Bash(npm --version:*)",
       "Bash(tree:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(./mvnw compile:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

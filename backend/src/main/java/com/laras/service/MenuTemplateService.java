@@ -70,6 +70,12 @@ public class MenuTemplateService {
                 .positionLeft(dto.getPositionLeft())
                 .positionWidth(dto.getPositionWidth() != null ? dto.getPositionWidth() : "22%")
                 .minHeight(dto.getMinHeight())
+                .positionHeight(dto.getPositionHeight())
+                .fontSize(dto.getFontSize())
+                .icon(dto.getIcon())
+                .iconSize(dto.getIconSize())
+                .bgColor(dto.getBgColor())
+                .textColor(dto.getTextColor())
                 .displayOrder(dto.getDisplayOrder() != null ? dto.getDisplayOrder() : 0)
                 .styleVariant(dto.getStyleVariant())
                 .isActive(dto.getIsActive() != null ? dto.getIsActive() : true)
@@ -98,6 +104,12 @@ public class MenuTemplateService {
         item.setPositionLeft(dto.getPositionLeft());
         if (dto.getPositionWidth() != null) item.setPositionWidth(dto.getPositionWidth());
         item.setMinHeight(dto.getMinHeight());
+        item.setPositionHeight(dto.getPositionHeight());
+        item.setFontSize(dto.getFontSize());
+        item.setIcon(dto.getIcon());
+        item.setIconSize(dto.getIconSize());
+        item.setBgColor(dto.getBgColor());
+        item.setTextColor(dto.getTextColor());
         if (dto.getDisplayOrder() != null) item.setDisplayOrder(dto.getDisplayOrder());
         item.setStyleVariant(dto.getStyleVariant());
         if (dto.getIsActive() != null) item.setIsActive(dto.getIsActive());
@@ -135,6 +147,12 @@ public class MenuTemplateService {
                 .positionLeft(item.getPositionLeft())
                 .positionWidth(item.getPositionWidth())
                 .minHeight(item.getMinHeight())
+                .positionHeight(item.getPositionHeight())
+                .fontSize(item.getFontSize())
+                .icon(item.getIcon())
+                .iconSize(item.getIconSize())
+                .bgColor(item.getBgColor())
+                .textColor(item.getTextColor())
                 .displayOrder(item.getDisplayOrder())
                 .styleVariant(item.getStyleVariant())
                 .isActive(item.getIsActive())

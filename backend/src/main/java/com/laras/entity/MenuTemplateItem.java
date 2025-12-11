@@ -84,6 +84,36 @@ public class MenuTemplateItem extends BaseEntity {
     @Size(max = 20)
     private String minHeight;
 
+    // Height (e.g., "70px", "auto")
+    @Column(name = "position_height")
+    @Size(max = 20)
+    private String positionHeight;
+
+    // Font size for text (e.g., "9px", "8px")
+    @Column(name = "font_size")
+    @Size(max = 20)
+    private String fontSize;
+
+    // Icon name (e.g., "cow", "chicken", "veggie")
+    @Column(name = "icon")
+    @Size(max = 50)
+    private String icon;
+
+    // Icon size (e.g., "26px")
+    @Column(name = "icon_size")
+    @Size(max = 20)
+    private String iconSize;
+
+    // Background color (e.g., "bg-white", "bg-[rgb(68,118,74)]")
+    @Column(name = "bg_color")
+    @Size(max = 50)
+    private String bgColor;
+
+    // Text color ("dark" or "white")
+    @Column(name = "text_color")
+    @Size(max = 20)
+    private String textColor;
+
     // Display order within the section
     @Column(name = "display_order")
     @Builder.Default
