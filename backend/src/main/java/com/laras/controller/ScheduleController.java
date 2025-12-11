@@ -29,6 +29,11 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.getPublicSchedules());
     }
 
+    @GetMapping("/schedule/special")
+    public ResponseEntity<List<ScheduleDto>> getActiveSpecialSchedules() {
+        return ResponseEntity.ok(scheduleService.getActiveSpecialSchedules());
+    }
+
     // Admin endpoints
     @GetMapping("/admin/schedules/regular")
     public ResponseEntity<List<ScheduleDto>> getAllRegularSchedules() {

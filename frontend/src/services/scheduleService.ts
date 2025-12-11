@@ -56,6 +56,11 @@ export const scheduleService = {
         return response.data;
     },
 
+    getActiveSpecialSchedules: async (): Promise<Schedule[]> => {
+        const response = await api.get<Schedule[]>('/schedule/special');
+        return response.data;
+    },
+
     getRegularSchedules: async (): Promise<Schedule[]> => {
         const response = await api.get<Schedule[]>('/admin/schedules/regular');
         return response.data;

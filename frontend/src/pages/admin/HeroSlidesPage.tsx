@@ -273,16 +273,18 @@ const SlideModal: React.FC<SlideModalProps> = ({ slide, onClose, onSave, isLoadi
     const [linkUrl, setLinkUrl] = useState(slide?.linkUrl || '');
     const [isActive, setIsActive] = useState(slide?.isActive ?? true);
     const [uploading, setUploading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         setUploading(true);
+        setError(null);
         try {
             const url = await dishService.uploadImage(file);
             setImageUrl(url);
-        } catch (error) {
-            alert('Error al subir imagen');
+        } catch (err) {
+            setError('Error al subir imagen. Intenta de nuevo.');
         } finally {
             setUploading(false);
         }
@@ -290,8 +292,9 @@ const SlideModal: React.FC<SlideModalProps> = ({ slide, onClose, onSave, isLoadi
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setError(null);
         if (!imageUrl) {
-            alert('La imagen es requerida');
+            setError('La imagen es requerida');
             return;
         }
         onSave({
@@ -310,6 +313,15 @@ const SlideModal: React.FC<SlideModalProps> = ({ slide, onClose, onSave, isLoadi
                     <h3 className="text-lg font-semibold">{slide ? 'Editar Slide' : 'Nuevo Slide'}</h3>
                 </div>
                 <form onSubmit={handleSubmit} className="p-4 space-y-4">
+                    {/* Error Message */}
+                    {error && (
+                        <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+                            <svg className="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                            {error}
+                        </div>
+                    )}
                     {/* Image Upload */}
                     <div>
                         <label className="block text-sm font-medium mb-2">Imagen *</label>

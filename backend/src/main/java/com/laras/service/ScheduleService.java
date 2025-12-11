@@ -59,6 +59,19 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get special schedules that are active or upcoming (for public display).
+     * Returns schedules where endDate >= today, or for single-date schedules where startDate >= today.
+     * This allows showing advance notices like "Closed Dec 20-25 for holidays".
+     */
+    public List<ScheduleDto> getActiveSpecialSchedules() {
+        LocalDate today = LocalDate.now();
+        return scheduleRepository.findActiveOrUpcomingSpecialSchedules(today)
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
     public List<ScheduleDto> getOverrides() {
         return scheduleRepository.findActiveOverrides(LocalDate.now())
                 .stream()

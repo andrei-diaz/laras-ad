@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AdminLayout from '../../components/admin/AdminLayout';
 import scheduleService, { Schedule, ScheduleInput, DayOfWeek } from '../../services/scheduleService';
+import { Toast, useToast } from '../../components/ui/Toast';
 import { Plus, Pencil, Trash2, Clock, Calendar, AlertCircle, Eye, ChevronUp, ChevronDown } from 'lucide-react';
 
 // Helper to format time from "HH:mm" to "H:mm AM/PM"
@@ -25,9 +26,10 @@ const DAYS: { value: DayOfWeek; label: string; short: string }[] = [
 
 const SchedulePage: React.FC = () => {
     const queryClient = useQueryClient();
-    const [activeTab, setActiveTab] = useState<'regular' | 'special' | 'overrides'>('regular');
+    const [activeTab, setActiveTab] = useState<'regular' | 'special'>('regular');
     const [showModal, setShowModal] = useState(false);
     const [editing, setEditing] = useState<Schedule | null>(null);
+    const { toast, showToast, hideToast } = useToast();
 
     const { data: status } = useQuery({
         queryKey: ['restaurant-status'],
@@ -45,15 +47,9 @@ const SchedulePage: React.FC = () => {
         queryFn: scheduleService.getSpecialSchedules,
     });
 
-    const { data: overrides = [] } = useQuery({
-        queryKey: ['overrides'],
-        queryFn: scheduleService.getOverrides,
-    });
-
     const invalidateAll = () => {
         queryClient.invalidateQueries({ queryKey: ['regular-schedules'] });
         queryClient.invalidateQueries({ queryKey: ['special-schedules'] });
-        queryClient.invalidateQueries({ queryKey: ['overrides'] });
         queryClient.invalidateQueries({ queryKey: ['restaurant-status'] });
     };
 
@@ -141,7 +137,7 @@ const SchedulePage: React.FC = () => {
             }
         } catch (error) {
             console.error('Error reordering:', error);
-            alert('Error al reordenar: ' + (error as Error).message);
+            showToast('Error al reordenar: ' + (error as Error).message, 'error');
         } finally {
             setIsReordering(false);
         }
@@ -164,7 +160,7 @@ const SchedulePage: React.FC = () => {
             invalidateAll();
         } catch (error) {
             console.error('Error initializing orders:', error);
-            alert('Error al asignar órdenes: ' + (error as Error).message);
+            showToast('Error al asignar órdenes: ' + (error as Error).message, 'error');
         } finally {
             setIsReordering(false);
         }
@@ -172,12 +168,10 @@ const SchedulePage: React.FC = () => {
 
     const currentSchedules = activeTab === 'regular'
         ? [...regularSchedules].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0))
-        : activeTab === 'special' ? specialSchedules : overrides;
+        : specialSchedules;
 
-    const getTabType = (): 'REGULAR' | 'SPECIAL' | 'OVERRIDE' => {
-        if (activeTab === 'regular') return 'REGULAR';
-        if (activeTab === 'special') return 'SPECIAL';
-        return 'OVERRIDE';
+    const getTabType = (): 'REGULAR' | 'SPECIAL' => {
+        return activeTab === 'regular' ? 'REGULAR' : 'SPECIAL';
     };
 
     return (
@@ -213,11 +207,10 @@ const SchedulePage: React.FC = () => {
                     {[
                         { key: 'regular', label: 'Horario Regular', icon: Clock },
                         { key: 'special', label: 'Fechas Especiales', icon: Calendar },
-                        { key: 'overrides', label: 'Excepciones', icon: AlertCircle },
                     ].map((tab) => (
                         <button
                             key={tab.key}
-                            onClick={() => setActiveTab(tab.key as any)}
+                            onClick={() => setActiveTab(tab.key as 'regular' | 'special')}
                             className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === tab.key
                                     ? 'bg-primary text-primary-foreground'
                                     : 'bg-muted hover:bg-muted/80'
@@ -246,10 +239,7 @@ const SchedulePage: React.FC = () => {
                         </div>
                     )}
                     {activeTab === 'special' && (
-                        <p>Configura horarios para fechas especiales como días festivos, eventos o vacaciones. Puedes definir rangos de fechas.</p>
-                    )}
-                    {activeTab === 'overrides' && (
-                        <p>Excepciones temporales que anulan los horarios regulares y especiales. Puedes definir una fecha de expiración.</p>
+                        <p>Configura horarios para fechas especiales como días festivos, eventos o vacaciones. Se mostrarán como alerta en la página principal.</p>
                     )}
                 </div>
             </div>
@@ -288,7 +278,6 @@ const SchedulePage: React.FC = () => {
                                         <p className="font-medium">
                                             {activeTab === 'regular' && schedule.displayDays}
                                             {activeTab === 'special' && (schedule.displayDateRange || schedule.description)}
-                                            {activeTab === 'overrides' && (schedule.description || 'Excepción')}
                                         </p>
                                         <div className="flex items-center gap-2 text-sm text-muted-foreground">
                                             {schedule.isClosed ? (
@@ -298,9 +287,6 @@ const SchedulePage: React.FC = () => {
                                             )}
                                             {activeTab === 'special' && schedule.description && schedule.displayDateRange && (
                                                 <span>• {schedule.description}</span>
-                                            )}
-                                            {activeTab === 'overrides' && schedule.expiresAt && (
-                                                <span className="text-yellow-600">• Expira: {new Date(schedule.expiresAt).toLocaleDateString('es-MX')}</span>
                                             )}
                                         </div>
                                     </div>
@@ -383,6 +369,15 @@ const SchedulePage: React.FC = () => {
                         }
                     }}
                     isLoading={createMutation.isPending || updateMutation.isPending}
+                />
+            )}
+
+            {/* Toast notification */}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={hideToast}
                 />
             )}
         </AdminLayout>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import {
     MapPin,
     Instagram,
@@ -7,9 +8,13 @@ import {
     Star,
     ChevronLeft,
     ChevronRight,
+    Clock,
+    AlertTriangle,
 } from 'lucide-react';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee';
 import heroSlideService, { HeroSlide } from '../../services/heroSlideService';
+import restaurantInfoService, { RestaurantInfo } from '../../services/restaurantInfoService';
+import scheduleService, { Schedule } from '../../services/scheduleService';
 
 // Fallback testimonials in case Google API fails
 const fallbackTestimonials = [
@@ -80,6 +85,28 @@ const HomePage: React.FC = () => {
     const [schedules, setSchedules] = useState<{ label: string; openTime: string; closeTime: string }[]>([]);
     const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([]);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [restaurantInfo, setRestaurantInfo] = useState<RestaurantInfo>({
+        address: 'Simon Bolivar y Cabrera, 67510 Montemorelos, N.L.',
+        phone: '826 267 3165',
+        instagramUrl: 'https://www.instagram.com/laras.__/',
+        facebookUrl: 'https://www.facebook.com/larasaurez/?locale=es_LA',
+    });
+
+    // React Query for restaurant status - same as admin
+    const { data: restaurantStatus } = useQuery({
+        queryKey: ['restaurant-status'],
+        queryFn: scheduleService.getStatus,
+        refetchInterval: 60000, // Refresh every minute
+    });
+
+    // React Query for special schedules
+    const { data: specialSchedules = [] } = useQuery({
+        queryKey: ['active-special-schedules'],
+        queryFn: scheduleService.getActiveSpecialSchedules,
+    });
+
+    // Helper to check if restaurant is open (same logic as admin)
+    const isRestaurantOpen = restaurantStatus?.isOpen || restaurantStatus?.statusMessage?.includes('Abierto');
 
     useEffect(() => {
         const fetchGooglePlaceInfo = async () => {
@@ -137,6 +164,19 @@ const HomePage: React.FC = () => {
         fetchGooglePlaceInfo();
         fetchSchedule();
 
+        // Fetch restaurant info
+        const fetchRestaurantInfo = async () => {
+            try {
+                const info = await restaurantInfoService.getInfo();
+                if (info) {
+                    setRestaurantInfo(prev => ({ ...prev, ...info }));
+                }
+            } catch (error) {
+                console.log('Using default restaurant info');
+            }
+        };
+        fetchRestaurantInfo();
+
         // Fetch hero slides
         const fetchHeroSlides = async () => {
             try {
@@ -180,11 +220,26 @@ const HomePage: React.FC = () => {
                             <Link to="/" className="flex items-center">
                                 <img src="/images/logo-black.png" alt="LARAS" className="h-[100px] w-[100px] object-contain" />
                             </Link>
-                            <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-stone-900">
-                                <Link to="/" className="border-b-2 border-amber-500 hover:text-amber-500 transition-colors">Inicio</Link>
-                                <Link to="/menu" className="hover:text-amber-500 transition-colors">Menú</Link>
-                                <a href="#ubicacion" className="hover:text-amber-500 transition-colors">Contacto</a>
-                            </nav>
+                            <div className="flex items-center gap-6">
+                                {/* Open/Closed Status Indicator */}
+                                {restaurantStatus && (
+                                    <div className={`hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${
+                                        isRestaurantOpen
+                                            ? 'bg-green-100 text-green-700'
+                                            : 'bg-red-100 text-red-700'
+                                    }`}>
+                                        <span className={`w-2 h-2 rounded-full ${
+                                            isRestaurantOpen ? 'bg-green-500 animate-pulse' : 'bg-red-500'
+                                        }`} />
+                                        {isRestaurantOpen ? 'Abierto' : 'Cerrado'}
+                                    </div>
+                                )}
+                                <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-stone-900">
+                                    <Link to="/" className="border-b-2 border-amber-500 hover:text-amber-500 transition-colors">Inicio</Link>
+                                    <Link to="/menu" className="hover:text-amber-500 transition-colors">Menú</Link>
+                                    <a href="#ubicacion" className="hover:text-amber-500 transition-colors">Contacto</a>
+                                </nav>
+                            </div>
                         </header>
 
                         <div className="max-w-lg mx-auto lg:mx-0 mt-28 lg:mt-28">
@@ -332,8 +387,7 @@ const HomePage: React.FC = () => {
                     <div className="space-y-6 text-stone-300">
                         <div>
                             <h3 className="text-white font-bold mb-1 block">Dirección</h3>
-                            <p>Simon Bolivar y Cabrera</p>
-                            <p>67510 Montemorelos, N.L.</p>
+                            <p>{restaurantInfo.address || 'Simon Bolivar y Cabrera, 67510 Montemorelos, N.L.'}</p>
                         </div>
                         <div>
                             <h3 className="text-white font-bold mb-1 block">Horario</h3>
@@ -348,9 +402,33 @@ const HomePage: React.FC = () => {
                                 </>
                             )}
                         </div>
+                        {/* Special Schedules Alerts */}
+                        {specialSchedules.length > 0 && (
+                            <div className="space-y-2">
+                                {specialSchedules.map((special) => (
+                                    <div
+                                        key={special.id}
+                                        className="flex items-start gap-2 p-3 bg-amber-500/20 border border-amber-500/30 rounded-lg"
+                                    >
+                                        <AlertTriangle className="h-4 w-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                                        <div className="text-sm">
+                                            <p className="text-amber-300 font-medium">
+                                                {special.displayDateRange || 'Horario especial'}
+                                            </p>
+                                            <p className="text-stone-300">
+                                                {special.isClosed
+                                                    ? special.description || 'Cerrado'
+                                                    : `${special.openTime} - ${special.closeTime}${special.description ? ` • ${special.description}` : ''}`
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                         <div>
                             <h3 className="text-white font-bold mb-1 block">Contacto</h3>
-                            <p>826 267 3165</p>
+                            <p>{restaurantInfo.phone || '826 267 3165'}</p>
                         </div>
                     </div>
                 </div>
@@ -402,14 +480,28 @@ const HomePage: React.FC = () => {
                     </div >
 
                     {/* Social Links */}
-                    < div className="flex items-center gap-6 px-12 py-10 lg:border-r border-white/20" >
-                        <a href="https://www.instagram.com/laras.__/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                    <div className="flex items-center gap-6 px-12 py-10 lg:border-r border-white/20">
+                        <a
+                            href={restaurantInfo.instagramUrl
+                                ? (restaurantInfo.instagramUrl.startsWith('http') ? restaurantInfo.instagramUrl : `https://${restaurantInfo.instagramUrl}`)
+                                : 'https://instagram.com'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:opacity-70 transition-opacity"
+                        >
                             <Instagram className="w-6 h-6" />
                         </a>
-                        <a href="https://www.facebook.com/larasaurez/?locale=es_LA" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                        <a
+                            href={restaurantInfo.facebookUrl
+                                ? (restaurantInfo.facebookUrl.startsWith('http') ? restaurantInfo.facebookUrl : `https://${restaurantInfo.facebookUrl}`)
+                                : 'https://facebook.com'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:opacity-70 transition-opacity"
+                        >
                             <Facebook className="w-6 h-6" />
                         </a>
-                    </div >
+                    </div>
 
                     {/* Copyright */}
                     < div className="flex items-center px-8 py-10" >

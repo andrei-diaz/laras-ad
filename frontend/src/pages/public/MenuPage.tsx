@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ChevronLeft, ChevronRight, Instagram, Facebook } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
 import menuTemplateService, { MenuTemplateItem } from '../../services/menuTemplateService';
+import restaurantInfoService, { RestaurantInfo } from '../../services/restaurantInfoService';
 
 // ===== LAYOUT CONFIGURATIONS (positions hardcoded for responsiveness) =====
 // These define WHERE items appear - positions are fixed for pixel-perfect layout
@@ -179,6 +180,10 @@ const MenuPage: React.FC = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'center', containScroll: false });
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [menuData, setMenuData] = useState<Record<string, { name: string; description: string }>>(defaultData);
+    const [restaurantInfo, setRestaurantInfo] = useState<RestaurantInfo>({
+        instagramUrl: 'https://www.instagram.com/laras.__/',
+        facebookUrl: 'https://www.facebook.com/larasaurez/?locale=es_LA',
+    });
 
     const REFERENCE_WIDTH = 400;
     const [scale, setScale] = useState(1);
@@ -206,6 +211,19 @@ const MenuPage: React.FC = () => {
             }
         };
         fetchMenuData();
+
+        // Fetch restaurant info for social links
+        const fetchRestaurantInfo = async () => {
+            try {
+                const info = await restaurantInfoService.getInfo();
+                if (info) {
+                    setRestaurantInfo(prev => ({ ...prev, ...info }));
+                }
+            } catch (error) {
+                console.log('Using default social links');
+            }
+        };
+        fetchRestaurantInfo();
     }, []);
 
     const scrollPrev = useCallback(() => {
@@ -444,10 +462,24 @@ const MenuPage: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex items-center gap-6 px-12 py-10 lg:border-r border-white/20">
-                        <a href="https://www.instagram.com/laras.__/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                        <a
+                            href={restaurantInfo.instagramUrl
+                                ? (restaurantInfo.instagramUrl.startsWith('http') ? restaurantInfo.instagramUrl : `https://${restaurantInfo.instagramUrl}`)
+                                : 'https://instagram.com'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:opacity-70 transition-opacity"
+                        >
                             <Instagram className="w-6 h-6" />
                         </a>
-                        <a href="https://www.facebook.com/larasaurez/?locale=es_LA" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                        <a
+                            href={restaurantInfo.facebookUrl
+                                ? (restaurantInfo.facebookUrl.startsWith('http') ? restaurantInfo.facebookUrl : `https://${restaurantInfo.facebookUrl}`)
+                                : 'https://facebook.com'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:opacity-70 transition-opacity"
+                        >
                             <Facebook className="w-6 h-6" />
                         </a>
                     </div>

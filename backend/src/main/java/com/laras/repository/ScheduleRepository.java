@@ -31,6 +31,14 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
            "ORDER BY s.priority DESC")
     List<Schedule> findSpecialSchedulesForDate(@Param("date") LocalDate date);
 
+    // Find special schedules that are active or upcoming (for public alerts)
+    // Shows schedules where: endDate >= today OR (endDate IS NULL AND startDate >= today)
+    @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'SPECIAL' " +
+           "AND ((s.endDate IS NOT NULL AND s.endDate >= :today) " +
+           "OR (s.endDate IS NULL AND s.startDate >= :today)) " +
+           "ORDER BY s.startDate ASC")
+    List<Schedule> findActiveOrUpcomingSpecialSchedules(@Param("today") LocalDate today);
+
     // Find regular schedules that contain a specific day
     @Query("SELECT s FROM Schedule s WHERE s.scheduleType = 'REGULAR' " +
            "AND s.daysOfWeek LIKE %:day%")
