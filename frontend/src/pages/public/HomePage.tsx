@@ -156,7 +156,7 @@ const HomePage: React.FC = () => {
         if (heroSlides.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentSlide(prev => (prev + 1) % heroSlides.length);
-        }, 5000); // Change every 5 seconds
+        }, 10000); // Change every 4 seconds
         return () => clearInterval(interval);
     }, [heroSlides.length]);
 
@@ -175,11 +175,16 @@ const HomePage: React.FC = () => {
                 <div className="grid lg:grid-cols-2 min-h-screen">
                     {/* Left Content */}
                     <div className="flex flex-col justify-center p-8 lg:p-20 relative order-2 lg:order-1">
-                        {/* Logo only */}
-                        <header className="absolute top-0 left-0 p-6 lg:p-10 z-10">
+                        {/* Logo and Navigation */}
+                        <header className="absolute top-0 left-0 right-0 p-6 lg:p-10 z-10 flex items-center justify-between">
                             <Link to="/" className="flex items-center">
                                 <img src="/images/logo-black.png" alt="LARAS" className="h-[100px] w-[100px] object-contain" />
                             </Link>
+                            <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-stone-900">
+                                <Link to="/" className="border-b-2 border-amber-500 hover:text-amber-500 transition-colors">Inicio</Link>
+                                <Link to="/menu" className="hover:text-amber-500 transition-colors">Menú</Link>
+                                <a href="#ubicacion" className="hover:text-amber-500 transition-colors">Contacto</a>
+                            </nav>
                         </header>
 
                         <div className="max-w-lg mx-auto lg:mx-0 mt-28 lg:mt-28">
@@ -244,12 +249,7 @@ const HomePage: React.FC = () => {
 
                     {/* Right Image - Carousel */}
                     <div className="relative h-[50vh] lg:h-screen w-full order-1 lg:order-2 bg-stone-900 overflow-hidden">
-                        {/* Navigation on top of image */}
-                        <nav className="absolute top-6 -left-32 lg:top-10 lg:-left-40 hidden lg:flex items-center gap-8 text-sm font-medium text-white z-50">
-                            <Link to="/" className="border-b-2 border-amber-500 hover:opacity-80 transition-opacity">Inicio</Link>
-                            <Link to="/menu" className="hover:opacity-80 transition-opacity">Menú</Link>
-                            <a href="#ubicacion" className="hover:opacity-80 transition-opacity">Contacto</a>
-                        </nav>
+
 
                         {/* Carousel Images */}
                         {heroSlides.map((slide, index) => (
@@ -262,14 +262,14 @@ const HomePage: React.FC = () => {
                                         <img
                                             src={slide.imageUrl}
                                             alt={slide.title || 'Hero'}
-                                            className="h-full w-full object-cover"
+                                            className="h-full w-full object-contain"
                                         />
                                     </Link>
                                 ) : (
                                     <img
                                         src={slide.imageUrl}
                                         alt={slide.title || 'Hero'}
-                                        className="h-full w-full object-cover"
+                                        className="h-full w-full object-contain"
                                     />
                                 )}
                                 {/* Overlay text if title exists */}

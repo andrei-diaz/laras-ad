@@ -5,7 +5,6 @@ import {
     LayoutDashboard,
     FileImage,
     Image,
-    Tag,
     Clock,
     MessageSquare,
     Settings,
@@ -22,9 +21,8 @@ const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
     { icon: Image, label: 'Carrusel Hero', href: '/admin/hero-slides' },
     { icon: FileImage, label: 'Plantilla Menú', href: '/admin/menu-template' },
-    { icon: Tag, label: 'Promociones', href: '/admin/promotions' },
     { icon: Clock, label: 'Horarios', href: '/admin/schedule' },
-    { icon: MessageSquare, label: 'Mensajes', href: '/admin/messages' },
+    { icon: MessageSquare, label: 'Mensajes', href: '/admin/messages', disabled: true, comingSoon: true },
     { icon: Settings, label: 'Configuración', href: '/admin/settings' },
 ];
 
@@ -68,6 +66,24 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                     {menuItems.map((item) => {
                         const isActive = location.pathname === item.href ||
                             (item.href !== '/admin/dashboard' && location.pathname.startsWith(item.href));
+
+                        // Disabled/coming soon items
+                        if (item.disabled) {
+                            return (
+                                <div
+                                    key={item.label}
+                                    className="flex items-center gap-3 px-4 py-2.5 rounded-md text-muted-foreground/50 cursor-not-allowed"
+                                >
+                                    <item.icon className="h-5 w-5" />
+                                    <div className="flex flex-col">
+                                        <span>{item.label}</span>
+                                        {item.comingSoon && (
+                                            <span className="text-[10px] text-muted-foreground/40 italic">próximamente</span>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        }
 
                         return (
                             <Link

@@ -199,7 +199,7 @@ const SchedulePage: React.FC = () => {
 
                 {/* Status Banner */}
                 {status && (
-                    <div className={`p-4 rounded-lg mb-6 ${status.isOpen ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    <div className={`p-4 rounded-lg mb-6 ${status.isOpen || status.statusMessage?.includes('Abierto') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                         <div className="flex items-center gap-2">
                             <Clock className="h-5 w-5" />
                             <span className="font-semibold">{status.statusMessage}</span>
@@ -218,11 +218,10 @@ const SchedulePage: React.FC = () => {
                         <button
                             key={tab.key}
                             onClick={() => setActiveTab(tab.key as any)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                activeTab === tab.key
+                            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${activeTab === tab.key
                                     ? 'bg-primary text-primary-foreground'
                                     : 'bg-muted hover:bg-muted/80'
-                            }`}
+                                }`}
                         >
                             <tab.icon className="h-4 w-4" />
                             {tab.label}
@@ -487,11 +486,10 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ schedule, defaultType, on
                                         key={day.value}
                                         type="button"
                                         onClick={() => toggleDay(day.value)}
-                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                                            selectedDays.includes(day.value)
+                                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${selectedDays.includes(day.value)
                                                 ? 'bg-primary text-primary-foreground'
                                                 : 'bg-muted hover:bg-muted/80'
-                                        }`}
+                                            }`}
                                     >
                                         {day.short}
                                     </button>
@@ -608,8 +606,8 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ schedule, defaultType, on
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder={
                                 scheduleType === 'REGULAR' ? 'Ej: Horario entre semana' :
-                                scheduleType === 'SPECIAL' ? 'Ej: Navidad, Vacaciones de verano' :
-                                'Ej: Cerrado por remodelación'
+                                    scheduleType === 'SPECIAL' ? 'Ej: Navidad, Vacaciones de verano' :
+                                        'Ej: Cerrado por remodelación'
                             }
                             className="w-full px-3 py-2 border border-input rounded-md bg-background"
                         />
